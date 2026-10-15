@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Destino Financiero y el Control de CITGO — Opción 1: War Room Estratégico 3D</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: radial-gradient(circle at 15% 15%, #111a2e 0%, #070b14 55%, #04060b 100%);
+      color: #f1f5f9;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.3);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(245, 158, 11, 0.6);
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    }
+    .gold-glow {
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.18);
+    }
+    .cyan-glow {
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.18);
+    }
+    .step-dot {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .step-dot.active {
+      background: linear-gradient(135deg, #f59e0b, #eab308);
+      color: #090d16;
+      font-weight: 700;
+      transform: scale(1.1);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.55);
+    }
+    .slide-fade {
+      animation: slideFadeIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes slideFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .badge-dimension-1 {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: #fbbf24;
+    }
+    .badge-dimension-2 {
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      color: #38bdf8;
+    }
+    .badge-dimension-3 {
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: #34d399;
+    }
+    .badge-transversal {
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      color: #c084fc;
+    }
+    canvas#chess3d {
+      cursor: grab;
+      touch-action: none;
+    }
+    canvas#chess3d:active {
+      cursor: grabbing;
+    }
+  </style>
+</head>
+<body class="select-none">
+
+  <!-- TOP HEADER BAR -->
+  <header class="w-full border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md px-5 py-3 flex flex-wrap items-center justify-between gap-3 z-30">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-amber-500/20">
+        ♔
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-400">Taller de Negociación II · Análisis Estratégico</span>
+          <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Opción 1: War Room Deck</span>
+        </div>
+        <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">El Destino Financiero y el Control de CITGO</h1>
+      </div>
+    </div>
+
+    <!-- Step Navigation Dots -->
+    <div class="flex items-center gap-1.5 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800" id="stepDotsContainer">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Right Quick Actions -->
+    <div class="flex items-center gap-2">
+      <button id="btnAutoPlay" onclick="toggleAutoPlay()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+        <span id="autoPlayIcon">▶</span> <span id="autoPlayText">Auto-Avance</span>
+      </button>
+      <button onclick="toggleBoardExpand()" id="btnExpand3D" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 transition">
+        ⛶ Expandir 3D
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE (SPLIT SCREEN) -->
+  <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-4 max-w-[1800px] w-full mx-auto overflow-hidden" id="mainGrid">
+
+    <!-- LEFT COLUMN: PRESENTATION SLIDE CONTENT (7 cols on lg) -->
+    <section id="slidePanel" class="lg:col-span-6 xl:col-span-6 flex flex-col justify-between glass-card rounded-2xl p-5 sm:p-6 overflow-y-auto max-h-[calc(100vh-145px)]">
+      <div>
+        <!-- Top Meta Row -->
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-800/80">
+          <span id="slideDimensionBadge" class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full badge-dimension-1">
+            DIMENSIÓN 1: EL LITIGIO INTERNACIONAL
+          </span>
+          <span id="slideMoveTag" class="text-xs font-mono text-slate-400 bg-slate-900/90 px-2.5 py-1 rounded-md border border-slate-800">
+            Jugada 1 / 10 · Posición Inicial
+          </span>
+        </div>
+
+        <!-- Slide Title & Subtitle -->
+        <div id="slideHeader" class="mb-5">
+          <h2 id="slideTitle" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight mb-1.5">
+            El Dilema Moral: Dos Éticas en Tensión
+          </h2>
+          <p id="slideSubtitle" class="text-sm text-slate-300 leading-relaxed">
+            Un análisis multidimensional del litigio judicial, la intervención geopolítica y las estrategias de negociación bajo el modelo de Tablero de Ajedrez.
+          </p>
+        </div>
+
+        <!-- Dynamic Slide Body -->
+        <div id="slideBody" class="space-y-4 select-text">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+
+      <!-- Slide Footer: Cátedra + Navigation Controls -->
+      <div class="mt-6 pt-4 border-t border-slate-800/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="slideFooterText" class="text-xs italic text-slate-400">
+            Cátedra: Taller de Negociación II — Ajedrez Estratégico: Posición Inicial
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2 self-end sm:self-auto">
+          <button onclick="prevSlide()" id="btnPrev" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition disabled:opacity-40">
+            ← Anterior
+          </button>
+          <button onclick="nextSlide()" id="btnNext" class="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 shadow-lg shadow-amber-500/20 transition">
+            Siguiente Jugada →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN: INTERACTIVE 3D CHESSBOARD STAGE (6 cols on lg) -->
+    <section id="boardPanel" class="lg:col-span-6 xl:col-span-6 flex flex-col glass-card rounded-2xl overflow-hidden relative min-h-[480px] max-h-[calc(100vh-145px)]">
+
+      <!-- Top Overlay HUD on 3D Board -->
+      <div class="absolute top-3 left-3 right-3 flex flex-wrap items-center justify-between gap-2 pointer-events-none z-20">
+        <!-- Tactical Status Pill -->
+        <div class="pointer-events-auto bg-slate-950/85 backdrop-blur-md border border-slate-700/80 rounded-xl px-3.5 py-2 shadow-lg max-w-md">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400" id="hudMoveCode">APERTURA: d1 → d4</span>
+            <span class="text-xs text-slate-400">|</span>
+            <span class="text-xs font-semibold text-cyan-300" id="hudMoveName">CITGO en el Centro del Litigio</span>
+          </div>
+          <p class="text-xs text-slate-300 mt-0.5 leading-snug" id="hudMoveDesc">
+            Arrastra el tablero para rotar en 3D · Haz clic en cualquier pieza para inspeccionar su rol.
+          </p>
+        </div>
+
+        <!-- Camera Presets -->
+        <div class="pointer-events-auto flex items-center gap-1 bg-slate-950/85 backdrop-blur-md border border-slate-700/80 rounded-xl p-1">
+          <button onclick="setCameraPreset('iso')" class="px-2.5 py-1 rounded-lg text-xs font-medium text-slate-200 hover:bg-slate-800 transition" title="Vista Perspectiva 3D">3D Iso</button>
+          <button onclick="setCameraPreset('top')" class="px-2.5 py-1 rounded-lg text-xs font-medium text-slate-200 hover:bg-slate-800 transition" title="Vista Cenital Táctica">Cenital</button>
+          <button onclick="setCameraPreset('vzla')" class="px-2.5 py-1 rounded-lg text-xs font-medium text-cyan-300 hover:bg-slate-800 transition" title="Perspectiva Defensa Venezolana">Sur (VZLA)</button>
+          <button onclick="setCameraPreset('us')" class="px-2.5 py-1 rounded-lg text-xs font-medium text-amber-300 hover:bg-slate-800 transition" title="Perspectiva Bloque Acreedor / EE.UU.">Norte (EE.UU.)</button>
+        </div>
+      </div>
+
+      <!-- 3D CANVAS CONTAINER -->
+      <div class="flex-1 w-full h-full relative bg-gradient-to-b from-slate-950 via-[#09101f] to-slate-950 flex items-center justify-center overflow-hidden">
+        <canvas id="chess3d" class="w-full h-full block"></canvas>
+
+        <!-- Selected Piece Inspector Popup -->
+        <div id="pieceInspector" class="hidden absolute bottom-16 left-3 right-3 sm:left-auto sm:right-3 sm:w-80 bg-slate-950/95 backdrop-blur-xl border border-amber-500/50 rounded-xl p-3.5 shadow-2xl z-20">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span id="inspSymbol" class="text-2xl">♛</span>
+              <div>
+                <div id="inspSide" class="text-xs font-bold uppercase tracking-wider text-amber-400">Bloque Acreedor</div>
+                <h4 id="inspTitle" class="text-sm font-bold text-white">Pieza Seleccionada</h4>
+              </div>
+            </div>
+            <button onclick="closeInspector()" class="text-slate-400 hover:text-white text-xs px-1.5 py-0.5 rounded bg-slate-800">✕</button>
+          </div>
+          <p id="inspDesc" class="text-xs text-slate-300 mt-2 leading-relaxed"></p>
+          <div class="mt-2 pt-2 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+            <span id="inspSquare">Casilla: d4</span>
+            <span id="inspRoleTag" class="text-cyan-300 font-medium">Activo Estratégico</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Legend & Piece Filter Bar -->
+      <div class="bg-slate-950/95 border-t border-slate-800/90 px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs z-20">
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-amber-400 inline-block shadow shadow-amber-400/50"></span>
+            <span class="text-slate-200 font-medium">Dorado: Bloque Acreedor / EE.UU. (Corte Delaware, OFAC, Bonistas)</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block shadow shadow-cyan-400/50"></span>
+            <span class="text-slate-200 font-medium">Cian/Esmeralda: Defensa CITGO / Soberanía / Crudo Merey</span>
+          </div>
+        </div>
+        <div class="text-slate-400 font-mono text-xs">
+          Teclas: <kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-slate-200">←</kbd> <kbd class="px-1.5 py-0.5 bg-slate-800 rounded text-slate-200">→</kbd> · Arrastrar: Rotar 3D · Rueda: Zoom
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. COMPLETELY FAITHFUL PRESENTATION DATA FROM THE MARKDOWN FILE
+    // =========================================================================
+    const SLIDES = [
+      {
+        id: 1,
+        dimension: "DIMENSIÓN 1: EL LITIGIO INTERNACIONAL",
+        badgeClass: "badge-dimension-1",
+        moveTag: "Jugada 1 / 10 · Posición Inicial",
+        title: "El Dilema Moral: Dos Éticas en Tensión",
+        subtitle: "Un análisis multidimensional del litigio judicial, la intervención geopolítica y las estrategias de negociación bajo el modelo de Tablero de Ajedrez.",
+        footer: "Cátedra: Taller de Negociación II — Ajedrez Estratégico: Posición Inicial",
+        hudCode: "APERTURA: d1 → d4",
+        hudName: "Despliegue Inicial & Activo en Disputa",
+        hudDesc: "Ambos bloques despliegan sus fuerzas. La Dama Esmeralda (CITGO) ocupa el centro del tablero (d4) entre dos éticas en colisión.",
+        camera: { rotY: 0.55, rotX: 0.68, zoom: 1.0 },
+        bodyHTML: `
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-300 leading-relaxed">
+            El litigio por el control de <strong class="text-white">PDV Holding / CITGO</strong> enfrenta dos marcos filosóficos y jurídicos irreconciliables cuando se ejecutan sin negociación: la ejecución estricta de contratos frente a la preservación de infraestructura vital de una nación.
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            <div class="p-4 rounded-xl bg-gradient-to-b from-amber-950/35 to-slate-900/90 border border-amber-500/40 gold-glow">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Justicia Correctiva (Deontológica)</span>
+                <span class="text-lg">⚖️</span>
+              </div>
+              <h3 class="text-sm font-bold text-white mb-3">Acreedores Institucionales & Tenedores de Bonos</h3>
+              <ul class="space-y-2 text-xs text-slate-200">
+                <li class="flex items-start gap-2"><span class="text-amber-400 font-bold">▸ Principio:</span> <span><em>Pacta Sunt Servanda</em> (Inviolabilidad del contrato).</span></li>
+                <li class="flex items-start gap-2"><span class="text-amber-400 font-bold">▸ Objetivo:</span> <span>Ejecución irrestricta de laudos arbitrales y cobro de acreencias por expropiación.</span></li>
+                <li class="flex items-start gap-2"><span class="text-amber-400 font-bold">▸ Impacto:</span> <span>Preserva la seguridad jurídica global.</span></li>
+              </ul>
+            </div>
+
+            <div class="p-4 rounded-xl bg-gradient-to-b from-cyan-950/35 to-slate-900/90 border border-cyan-500/40 cyan-glow">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Protección Social (Consecuencialista)</span>
+                <span class="text-lg">🛡️</span>
+              </div>
+              <h3 class="text-sm font-bold text-white mb-3">Defensa del Patrimonio Soberano Venezolano</h3>
+              <ul class="space-y-2 text-xs text-slate-200">
+                <li class="flex items-start gap-2"><span class="text-cyan-400 font-bold">▸ Principio:</span> <span>Bien Común y Autodeterminación Económica.</span></li>
+                <li class="flex items-start gap-2"><span class="text-cyan-400 font-bold">▸ Objetivo:</span> <span>Evitar el despojo forzoso del activo estratégico para financiar la reconstrucción nacional.</span></li>
+                <li class="flex items-start gap-2"><span class="text-cyan-400 font-bold">▸ Impacto:</span> <span>Protege a la población vulnerable.</span></li>
+              </ul>
+            </div>
+          </div>
+        `,
+        boardState: {
+          highlights: [
+            { sq: "d4", color: "rgba(16, 185, 129, 0.45)", label: "CITGO" },
+            { sq: "e8", color: "rgba(245, 158, 11, 0.35)", label: "Acreedores" },
+            { sq: "e1", color: "rgba(6, 182, 212, 0.35)", label: "Soberanía" }
+          ],
+          arrows: [
+            { from: "d1", to: "d4", color: "#10b981", label: "Activo Estratégico" }
+          ],
+          pieces: [
+            // US / Creditor Side (Gold)
+            { id: "us_ra", type: "R", side: "gold", sq: "a8", name: "Torre Judicial (Delaware)", role: "Corte Federal de Delaware — Ejecución ISDS" },
+            { id: "us_nb", type: "N", side: "gold", sq: "b8", name: "Caballo Geopolítico (OFAC)", role: "Licencias Discrecionales 5V, 5Y, 5Z" },
+            { id: "us_bc", type: "B", side: "gold", sq: "c8", name: "Alfil Arbitral (Crystallex)", role: "Laudo Arbitral ~$1.000M por expropiación" },
+            { id: "us_q",  type: "Q", side: "gold", sq: "d8", name: "Consorcio Acreedor", role: "Pacta Sunt Servanda — Ejecución de Laudos" },
+            { id: "us_k",  type: "K", side: "gold", sq: "e8", name: "Rey: Élites Financieras", role: "Elliott Management / Amber Energy & Grandes Fondos" },
+            { id: "us_bf", type: "B", side: "gold", sq: "f8", name: "Alfil Arbitral (ConocoPhillips)", role: "Laudo Arbitral ~$1.300M" },
+            { id: "us_ng", type: "N", side: "gold", sq: "g8", name: "Caballo Ejecutivo (Casa Blanca)", role: "Control del reloj político de la subasta" },
+            { id: "us_rh", type: "R", side: "gold", sq: "h8", name: "Torre Judicial (Juez Stark)", role: "Maestro Especial y Subasta Judicial" },
+            { id: "us_pa", type: "P", side: "gold", sq: "a7", name: "Reclamo Secundario", role: "Acreedores comerciales en fila" },
+            { id: "us_pb", type: "P", side: "gold", sq: "b7", name: "Demanda Arbitral", role: "Litigio internacional acumulado" },
+            { id: "us_pc", type: "P", side: "gold", sq: "c7", name: "Bono PDVSA 2020 (Colateral)", role: "Garantía del 50.1% de acciones de CITGO" },
+            { id: "us_pd", type: "P", side: "gold", sq: "d7", name: "Bono PDVSA 8.75%", role: "Tenedores de Bonos bloqueados por OFAC" },
+            { id: "us_pe", type: "P", side: "gold", sq: "e7", name: "Presión Financiera", role: "Intereses moratorios y costas" },
+            { id: "us_pf", type: "P", side: "gold", sq: "f7", name: "Embargo Preventivo", role: "Acciones sobre PDV Holding" },
+            { id: "us_pg", type: "P", side: "gold", sq: "g7", name: "Certeza de Cierre", role: "Criterio priorizado en subasta" },
+            { id: "us_ph", type: "P", side: "gold", sq: "h7", name: "Seguridad Jurídica", role: "Respaldo institucional norteamericano" },
+            // VZLA / CITGO Side (Cyan)
+            { id: "vz_ra", type: "R", side: "cyan", sq: "a1", name: "Refinería Lake Charles", role: "Complejo de refinación de alta conversión" },
+            { id: "vz_nb", type: "N", side: "cyan", sq: "b1", name: "Defensa Jurídica", role: "Representación legal en Delaware" },
+            { id: "vz_bc", type: "B", side: "cyan", sq: "c1", name: "Principio de Bien Común", role: "Ética consecuencialista de protección social" },
+            { id: "vz_q",  type: "Q", side: "cyan", sq: "d4", name: "Dama: CITGO (PDV Holding)", role: "Activo estratégico valorado en $15.100M", tag: "CITGO" },
+            { id: "vz_k",  type: "K", side: "cyan", sq: "e1", name: "Rey: Patrimonio Soberano", role: "Estado Venezolano y propiedad accionaria" },
+            { id: "vz_bf", type: "B", side: "cyan", sq: "f1", name: "Autodeterminación Económica", role: "Financiamiento para reconstrucción nacional" },
+            { id: "vz_ng", type: "N", side: "cyan", sq: "g1", name: "Gobernanza Corporativa", role: "Junta directiva y gestión operativa" },
+            { id: "vz_rh", type: "R", side: "cyan", sq: "h1", name: "Refinería Corpus Christi", role: "Optimizada para dieta de crudo pesado" },
+            { id: "vz_pa", type: "P", side: "cyan", sq: "a2", name: "Peón: Población Vulnerable", role: "Ciudadanía afectada por pérdida de activos" },
+            { id: "vz_pb", type: "P", side: "cyan", sq: "b2", name: "Peón: Servicios Esenciales", role: "Recursos vitales para recuperación" },
+            { id: "vz_pc", type: "P", side: "cyan", sq: "c2", name: "Peón: Ciudadanía Venezolana", role: "Pieza expuesta en la primera línea" },
+            { id: "vz_pd", type: "P", side: "cyan", sq: "d2", name: "Peón: Reactivación Energética", role: "Dependencia del flujo de caja petrolero" },
+            { id: "vz_pe", type: "P", side: "cyan", sq: "e2", name: "Peón: Crudo Pesado Merey", role: "Palanca técnica de compensación futura" },
+            { id: "vz_pf", type: "P", side: "cyan", sq: "f2", name: "Peón: Empleo e Infraestructura", role: "Sostenibilidad económica interna" },
+            { id: "vz_pg", type: "P", side: "cyan", sq: "g2", name: "Peón: Mercado Interno", role: "Suministro y estabilidad social" },
+            { id: "vz_ph", type: "P", side: "cyan", sq: "h2", name: "Peón: Futuro Generacional", role: "Patrimonio estratégico de largo plazo" }
+          ]
+        }
+      },
+      {
+        id: 2,
+        dimension: "ANALOGÍA DEL AJEDREZ (PIEZAS 1 & 2)",
+        badgeClass: "badge-dimension-1",
+        moveTag: "Jugada 2 / 10 · Reyes vs. Peones",
+        title: "Reyes vs. Peones en el Litigio Financiero",
+        subtitle: "Modelado de actores: La asimetría jerárquica entre las élites financieras que dominan el aparato judicial y la población civil expuesta.",
+        footer: "Cátedra: Taller de Negociación II — Dimensión 1 - Modelado de Actores",
+        hudCode: "CHOQUE: c2→c4, e2→e4",
+        hudName: "Peones Expuestos vs. Reyes Resguardados",
+        hudDesc: "Los Peones (población civil) absorben el impacto directo en primera línea mientras los Reyes (élites financieras) operan desde la máxima jerarquía.",
+        camera: { rotY: -0.45, rotX: 0.62, zoom: 1.06 },
+        bodyHTML: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-slate-900/95 border-l-4 border-amber-400 border border-slate-800">
+              <div class="flex items-center gap-2.5 mb-2.5">
+                <span class="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-xl text-amber-300">♔</span>
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Pieza 1 · Máxima Jerarquía</span>
+                  <h3 class="text-base font-bold text-white">Los Reyes: Élites Corporativas y Financieras</h3>
+                </div>
+              </div>
+              <p class="text-xs text-slate-200 leading-relaxed">
+                Grandes fondos de inversión (<strong class="text-amber-300">Elliott Management / Amber Energy</strong>), tenedores de bonos <strong class="text-amber-300">PDVSA 2020</strong> y multinacionales expropiadas (<strong class="text-amber-300">Crystallex, ConocoPhillips</strong>). Dominan el aparato judicial estadounidense y ejercen máxima jerarquía.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900/95 border-l-4 border-cyan-400 border border-slate-800">
+              <div class="flex items-center gap-2.5 mb-2.5">
+                <span class="w-9 h-9 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-xl text-cyan-300">♙</span>
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-cyan-400">Pieza 2 · Primera Línea Expuesta</span>
+                  <h3 class="text-base font-bold text-white">Los Peones: Población Civil Vulnerable</h3>
+                </div>
+              </div>
+              <p class="text-xs text-slate-200 leading-relaxed">
+                La <strong class="text-cyan-300">ciudadanía venezolana</strong>. Representan las piezas expuestas. La liquidación precipitada transfiere el costo directo a los peones, privando a la nación de recursos vitales para la reactivación energética.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center gap-3 text-xs text-amber-200">
+            <span class="text-xl">🎯</span>
+            <span><strong>Lectura en el Tablero 3D:</strong> Observa cómo los peones en <code class="text-white font-mono">c4</code>, <code class="text-white font-mono">d3</code> y <code class="text-white font-mono">e4</code> quedan en zona de sacrificio frente al avance acreedor, mientras el Rey dorado en <code class="text-white font-mono">e8</code> dirige la presión sin exponerse.</span>
+          </div>
+        `,
+        boardState: {
+          highlights: [
+            { sq: "e8", color: "rgba(245, 158, 11, 0.55)", label: "REY: ÉLITES" },
+            { sq: "c4", color: "rgba(6, 182, 212, 0.45)", label: "PEÓN EXPUESTO" },
+            { sq: "e4", color: "rgba(6, 182, 212, 0.45)", label: "PEÓN EXPUESTO" },
+            { sq: "d3", color: "rgba(6, 182, 212, 0.35)", label: "PEÓN" }
+          ],
+          arrows: [
+            { from: "c2", to: "c4", color: "#06b6d4", label: "Exposición Civil" },
+            { from: "e2", to: "e4", color: "#06b6d4", label: "Costo Directo" },
+            { from: "e8", to: "d4", color: "#f59e0b", label: "Dominio Judicial" }
+          ],
+          pieces: [
+            { id: "us_ra", type: "R", side: "gold", sq: "a8", name: "Torre Judicial (Delaware)", role: "Corte Federal de Delaware" },
+            { id: "us_nb", type: "N", side: "gold", sq: "b8", name: "Caballo Geopolítico (OFAC)", role: "Licencias Discrecionales" },
+            { id: "us_bc", type: "B", side: "gold", sq: "c8", name: "Alfil Arbitral (Crystallex)", role: "Laudo ~$1.000M" },
+            { id: "us_q",  type: "Q", side: "gold", sq: "d8", name: "Consorcio Acreedor", role: "Ejecución de Laudos" },
+            { id: "us_k",  type: "K", side: "gold", sq: "e8", name: "Rey: Élites Financieras", role: "Elliott Management / Amber Energy, Bonos 2020, Crystallex, ConocoPhillips", tag: "REYES" },
+            { id: "us_bf", type: "B", side: "gold", sq: "f8", name: "Alfil Arbitral (ConocoPhillips)", role: "Laudo ~$1.300M" },
+            { id: "us_ng", type: "N", side: "gold", sq: "g8", name: "Caballo Ejecutivo (Casa Blanca)", role: "Control del reloj político" },
+            { id: "us_rh", type: "R", side: "gold", sq: "h8", name: "Torre Judicial (Juez Stark)", role: "Subasta Judicial" },
+            { id: "us_pa", type: "P", side: "gold", sq: "a7", name: "Reclamo Secundario", role: "Acreedores comerciales" },
+            { id: "us_pb", type: "P", side: "gold", sq: "b7", name: "Demanda Arbitral", role: "Litigio acumulado" },
+            { id: "us_pc", type: "P", side: "gold", sq: "c6", name: "Bono PDVSA 2020", role: "Garantía 50.1% CITGO" },
+            { id: "us_pd", type: "P", side: "gold", sq: "d5", name: "Presión de Liquidación", role: "Amenaza sobre peones vulnerables" },
+            { id: "us_pe", type: "P", side: "gold", sq: "e6", name: "Intereses Acumulados", role: "Pasivos en ejecución" },
+            { id: "us_pf", type: "P", side: "gold", sq: "f7", name: "Embargo Preventivo", role: "Acciones sobre PDV Holding" },
+            { id: "us_pg", type: "P", side: "gold", sq: "g7", name: "Certeza de Cierre", role: "Prioridad judicial" },
+            { id: "us_ph", type: "P", side: "gold", sq: "h7", name: "Seguridad Jurídica", role: "Respaldo institucional" },
+            // VZLA
+            { id: "vz_ra", type: "R", side: "cyan", sq: "a1", name: "Refinería Lake Charles", role: "Infraestructura estratégica" },
+            { id: "vz_nb", type: "N", side: "cyan", sq: "b1", name: "Defensa Jurídica", role: "Representación legal" },
+            { id: "vz_bc", type: "B", side: "cyan", sq: "c1", name: "Principio de Bien Común", role: "Protección social" },
+            { id: "vz_q",  type: "Q", side: "cyan", sq: "d4", name: "Dama: CITGO", role: "Activo estratégico en riesgo", tag: "CITGO" },
+            { id: "vz_k",  type: "K", side: "cyan", sq: "e1", name: "Rey: Estado Venezolano", role: "Patrimonio Soberano" },
+            { id: "vz_bf", type: "B", side: "cyan", sq: "f1", name: "Autodeterminación Económica", role: "Reconstrucción nacional" },
+            { id: "vz_ng", type: "N", side: "cyan", sq: "g1", name: "Gobernanza Corporativa", role: "Gestión operativa" },
+            { id: "vz_rh", type: "R", side: "cyan", sq: "h1", name: "Refinería Corpus Christi", role: "Alta conversión" },
+            { id: "vz_pa", type: "P", side: "cyan", sq: "a2", name: "Peón: Población Vulnerable", role: "Ciudadanía expuesta" },
+            { id: "vz_pb", type: "P", side: "cyan", sq: "b2", name: "Peón: Servicios Esenciales", role: "Recursos vitales" },
+            { id: "vz_pc", type: "P", side: "cyan", sq: "c4", name: "Peón Expuesto: Ciudadanía", role: "Sufre el costo directo de la liquidación", tag: "PEÓN" },
+            { id: "vz_pd", type: "P", side: "cyan", sq: "d3", name: "Peón: Reactivación Energética", role: "Privado de recursos vitales" },
+            { id: "vz_pe", type: "P", side: "cyan", sq: "e4", name: "Peón Expuesto: Población Civil", role: "Primera línea de impacto social", tag: "PEÓN" },
+            { id: "vz_pf", type: "P", side: "cyan", sq: "f2", name: "Peón: Empleo e Infraestructura", role: "Sostenibilidad interna" },
+            { id: "vz_pg", type: "P", side: "cyan", sq: "g2", name: "Peón: Mercado Interno", role: "Estabilidad social" },
+            { id: "vz_ph", type: "P", side: "cyan", sq: "h2", name: "Peón: Futuro Generacional", role: "Patrimonio nacional" }
+          ]
+        }
+      },
+      {
+        id: 3,
+        dimension: "CORRECCIÓN CRÍTICA",
+        badgeClass: "badge-dimension-1",
+        moveTag: "Jugada 3 / 10 · Complejidad Multilateral",
+        title: "El Trilema Ético Real",
+        subtitle: "Más allá de una dualidad simple, el tablero enfrenta a tres grupos con derechos y riesgos contrapuestos, agravados por la responsabilidad estatal.",
+        footer: "Cátedra: Taller de Negociación II — Dimensión 1 Complejidad Multilateral",
+        hudCode: "TRILEMA: Bc8→f5, Bf8→c5",
+        hudName: "Tres Fuerzas en Colisión Simultánea",
+        hudDesc: "Acreedores Arbitrales (Alfiles f5/c5), Tenedores Bono 2020 bloqueados (c6/d5) y Población Vulnerable (c4/e4).",
+        camera: { rotY: 0.25, rotX: 0.72, zoom: 1.05 },
+        bodyHTML: `
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <!-- Col 1 -->
+            <div class="p-3.5 rounded-xl bg-slate-900/95 border border-amber-500/40 flex flex-col justify-between">
+              <div>
+                <div class="text-xs font-bold uppercase text-amber-400 mb-1">1. Acreedores Arbitrales</div>
+                <div class="text-sm font-bold text-white mb-2">Crystallex (~$1.000M)<br/>ConocoPhillips (~$1.300M)</div>
+                <p class="text-xs text-slate-300 mb-2"><strong class="text-amber-300">Posición:</strong> Justicia correctiva por expropiación.</p>
+              </div>
+              <div class="p-2 rounded-lg bg-amber-950/40 border border-amber-500/30 text-xs text-amber-200">
+                <strong>Riesgo:</strong> Cobro parcial tras años de litigio.
+              </div>
+            </div>
+
+            <!-- Col 2 -->
+            <div class="p-3.5 rounded-xl bg-slate-900/95 border border-rose-500/40 flex flex-col justify-between">
+              <div>
+                <div class="text-xs font-bold uppercase text-rose-400 mb-1">2. Tenedores Bono 2020</div>
+                <div class="text-sm font-bold text-white mb-2">Bono PDVSA 8.75%<br/>(Garantía 50.1% CITGO)</div>
+                <p class="text-xs text-slate-300 mb-2"><strong class="text-rose-300">Posición:</strong> Derecho a ejecutar garantía colateral.</p>
+              </div>
+              <div class="p-2 rounded-lg bg-rose-950/40 border border-rose-500/30 text-xs text-rose-200">
+                <strong>Riesgo:</strong> Bloqueados por OFAC; probable recuperación nula.
+              </div>
+            </div>
+
+            <!-- Col 3 -->
+            <div class="p-3.5 rounded-xl bg-slate-900/95 border border-cyan-500/40 flex flex-col justify-between">
+              <div>
+                <div class="text-xs font-bold uppercase text-cyan-400 mb-1">3. Población Vulnerable</div>
+                <div class="text-sm font-bold text-white mb-2">Ciudadanía y<br/>recuperación económica</div>
+                <p class="text-xs text-slate-300 mb-2"><strong class="text-cyan-300">Posición:</strong> Derecho al patrimonio soberano.</p>
+              </div>
+              <div class="p-2 rounded-lg bg-cyan-950/40 border border-cyan-500/30 text-xs text-cyan-200">
+                <strong>Riesgo:</strong> Pérdida total del activo e infraestructura vital.
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-gradient-to-r from-rose-950/60 via-slate-900 to-slate-900 border-l-4 border-rose-500 border border-rose-500/30 text-xs text-slate-200 leading-relaxed">
+            <strong class="text-rose-400 uppercase tracking-wider block mb-1">⚠️ Nota Clave de Responsabilidad Estatal:</strong>
+            La ética de la protección social no puede invocarse sin reconocer que el propio Estado venezolano generó los pasivos e incumplimientos que hoy amenazan al activo.
+          </div>
+        `,
+        boardState: {
+          highlights: [
+            { sq: "f5", color: "rgba(245, 158, 11, 0.45)", label: "CRYSTALLEX" },
+            { sq: "c5", color: "rgba(245, 158, 11, 0.45)", label: "CONOCO" },
+            { sq: "c6", color: "rgba(244, 63, 94, 0.45)", label: "BONO 2020" },
+            { sq: "e1", color: "rgba(244, 63, 94, 0.4)", label: "PASIVOS ESTADO" }
+          ],
+          arrows: [
+            { from: "f5", to: "d4", color: "#f59e0b", label: "$1.000M" },
+            { from: "c5", to: "d4", color: "#f59e0b", label: "$1.300M" },
+            { from: "c6", to: "d4", color: "#f43f5e", label: "50.1% Bloqueado" }
+          ],
+          pieces: [
+            { id: "us_ra", type: "R", side: "gold", sq: "a8", name: "Torre Judicial (Delaware)", role: "Corte Federal de Delaware" },
+            { id: "us_nb", type: "N", side: "gold", sq: "b8", name: "Caballo Geopolítico (OFAC)", role: "Bloquea ejecución de Bono 2020" },
+            { id: "us_bc", type: "B", side: "gold", sq: "f5", name: "Crystallex (~$1.000M)", role: "Acreedor Arbitral — Justicia correctiva por expropiación", tag: "$1.000M" },
+            { id: "us_q",  type: "Q", side: "gold", sq: "d8", name: "Consorcio Acreedor", role: "Ejecución de Laudos" },
+            { id: "us_k",  type: "K", side: "gold", sq: "e8", name: "Rey: Élites Financieras", role: "Elliott Management / Amber Energy" },
+            { id: "us_bf", type: "B", side: "gold", sq: "c5", name: "ConocoPhillips (~$1.300M)", role: "Acreedor Arbitral — Riesgo de cobro parcial", tag: "$1.300M" },
+            { id: "us_ng", type: "N", side: "gold", sq: "g8", name: "Caballo Ejecutivo (Casa Blanca)", role: "Control político" },
+            { id: "us_rh", type: "R", side: "gold", sq: "h8", name: "Torre Judicial (Juez Stark)", role: "Subasta Judicial" },
+            { id: "us_pa", type: "P", side: "gold", sq: "a7", name: "Reclamo Secundario", role: "Acreedores comerciales" },
+            { id: "us_pb", type: "P", side: "gold", sq: "b7", name: "Demanda Arbitral", role: "Litigio acumulado" },
+            { id: "us_pc", type: "P", side: "gold", sq: "c6", name: "Tenedores Bono 2020 (8.75%)", role: "Garantía 50.1% CITGO — Bloqueados por OFAC", tag: "BONO 2020" },
+            { id: "us_pd", type: "P", side: "gold", sq: "d5", name: "Colateral en Disputa", role: "Ejecución suspendida" },
+            { id: "us_pe", type: "P", side: "gold", sq: "e6", name: "Intereses Acumulados", role: "Pasivos en ejecución" },
+            { id: "us_pf", type: "P", side: "gold", sq: "f7", name: "Embargo Preventivo", role: "Acciones sobre PDV Holding" },
+            { id: "us_pg", type: "P", side: "gold", sq: "g7", name: "Certeza de Cierre", role: "Prioridad judicial" },
+            { id: "us_ph", type: "P", side: "gold", sq: "h7", name: "Seguridad Jurídica", role: "Respaldo institucional" },
+            // VZLA
+            { id: "vz_ra", type: "R", side: "cyan", sq: "a1", name: "Refinería Lake Charles", role: "Infraestructura estratégica" },
+            { id: "vz_nb", type: "N", side: "cyan", sq: "b1", name: "Defensa Jurídica", role: "Representación legal" },
+            { id: "vz_bc", type: "B", side: "cyan", sq: "c1", name: "Principio de Bien Común", role: "Protección social" },
+            { id: "vz_q",  type: "Q", side: "cyan", sq: "d4", name: "Dama: CITGO", role: "Peligro de pérdida total del activo", tag: "CITGO" },
+            { id: "vz_k",  type: "K", side: "cyan", sq: "e1", name: "Rey: Estado Venezolano", role: "Generó los pasivos e incumplimientos que hoy amenazan al activo", tag: "PASIVOS" },
+            { id: "vz_bf", type: "B", side: "cyan", sq: "f1", name: "Autodeterminación Económica", role: "Reconstrucción nacional" },
+            { id: "vz_ng", type: "N", side: "cyan", sq: "g1", name: "Gobernanza Corporativa", role: "Gestión operativa" },
+            { id: "vz_rh", type: "R", side: "cyan", sq: "h1", name: "Refinería Corpus Christi", role: "Alta conversión" },
+            { id: "vz_pa", type: "P", side: "cyan", sq: "a2", name: "Peón: Población Vulnerable", role: "Riesgo de pérdida total" },
+            { id: "vz_pb", type: "P", side: "cyan", sq: "b2", name: "Peón: Servicios Esenciales", role: "Recursos vitales" },
+            { id: "vz_pc", type: "P", side: "cyan", sq: "c4", name: "Peón: Ciudadanía Vulnerable", role: "Derecho al patrimonio soberano", tag: "VULNERABLE" },
+            { id: "vz_pd", type: "P", side: "cyan", sq: "d3", name: "Peón: Reactivación Energética", role: "Privado de recursos vitales" },
+            { id: "vz_pe", type: "P", side: "cyan", sq: "e4", name: "Peón: Recuperación Económica", role: "En riesgo por remate" },
+            { id: "vz_pf", type: "P", side: "cyan", sq: "f2", name: "Peón: Empleo", role: "Sostenibilidad interna" },
+            { id: "vz_pg", type: "P", side: "cyan", sq: "g2", name: "Peón: Mercado Interno", role: "Estabilidad social" },
+            { id: "vz_ph", type: "P", side: "cyan", sq: "h2", name: "Peón: Futuro Generacional", role: "Patrimonio nacional" }
+          ]
+        }
+      },
+      {
+        id: 4,
+        dimension: "DIMENSIÓN 2: PODER Y JURISPRUDENCIA",
+        badgeClass: "badge-dimension-2",
+        moveTag: "Jugada 4 / 10 · Conflicto de Instituciones",
+        title: "Coerción Judicial vs. Arbitraje Geopolítico",
+        subtitle: "La pugna institucional dentro de Estados Unidos entre la ejecución forzosa de los tribunales federales y la discrecionalidad sancionatoria del Ejecutivo.",
+        footer: "Cátedra: Taller de Negociación II — Dimensión 2 - Conflicto de Instituciones",
+        hudCode: "INSTITUCIONES: Ra8→d8, Ng8→f6",
+        hudName: "Juez Leonard Stark vs. Licencia OFAC 5Z",
+        hudDesc: "La Torre Judicial (Corte de Delaware) aprueba la oferta de $5.900M de Amber Energy, mientras el Caballo Ejecutivo (OFAC 5Z) controla el ritmo geopolítico.",
+        camera: { rotY: 0.75, rotX: 0.64, zoom: 1.08 },
+        bodyHTML: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-slate-900/95 border border-amber-500/45 gold-glow">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Poder Judicial Coercitivo</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">USD 5.900M</span>
+              </div>
+              <h3 class="text-base font-bold text-white mb-2">Corte Federal de Delaware (Juez Leonard Stark)</h3>
+              <p class="text-xs text-slate-200 leading-relaxed">
+                Aprobó la oferta de <strong class="text-amber-300">USD 5.900 millones</strong> de <strong class="text-white">Amber Energy (Elliott Management)</strong> por PDV Holding. Privilegió la <strong class="text-amber-300">certeza de cierre</strong> sobre ofertas nominalmente superiores.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900/95 border border-sky-500/45 cyan-glow">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Poder Ejecutivo Discrecional</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 font-mono">Licencia 5Z</span>
+              </div>
+              <h3 class="text-base font-bold text-white mb-2">Casa Blanca / OFAC (Licencia General 5Z)</h3>
+              <p class="text-xs text-slate-200 leading-relaxed">
+                Mantiene <strong class="text-sky-300">suspendida la ejecución del colateral</strong> del bono PDVSA 2020. Controla el ritmo del traspaso mediante mecanismos de <strong class="text-white">sanciones y geopolítica</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 flex items-center justify-between gap-4">
+            <div>
+              <strong class="text-white">Tensión Institucional en el Tablero:</strong> La Corte avanza hacia la liquidación definitiva, pero toda transferencia efectiva de acciones requiere autorización de la OFAC (Departamento del Tesoro).
+            </div>
+          </div>
+        `,
+        boardState: {
+          highlights: [
+            { sq: "d8", color: "rgba(245, 158, 11, 0.55)", label: "JUEZ STARK" },
+            { sq: "f6", color: "rgba(56, 189, 248, 0.55)", label: "OFAC 5Z" },
+            { sq: "d4", color: "rgba(16, 185, 129, 0.45)", label: "PDV HOLDING" }
+          ],
+          arrows: [
+            { from: "d8", to: "d4", color: "#f59e0b", label: "Subasta $5.900M" },
+            { from: "f6", to: "c6", color: "#38bdf8", label: "Suspende Bono 2020" }
+          ],
+          pieces: [
+            { id: "us_ra", type: "R", side: "gold", sq: "d8", name: "Corte de Delaware (Juez Stark)", role: "Aprobó oferta de USD 5.900M de Amber Energy (Elliott Management)", tag: "STARK" },
+            { id: "us_nb", type: "N", side: "gold", sq: "b8", name: "Caballo Geopolítico (OFAC)", role: "Control sancionatorio" },
+            { id: "us_bc", type: "B", side: "gold", sq: "f5", name: "Crystallex (~$1.000M)", role: "Acreedor Arbitral" },
+            { id: "us_q",  type: "Q", side: "gold", sq: "b6", name: "Amber Energy (Elliott)", role: "Oferta aprobada privilegiando certeza de cierre" },
+            { id: "us_k",  type: "K", side: "gold", sq: "e8", name: "Rey: Élites Financieras", role: "Elliott Management" },
+            { id: "us_bf", type: "B", side: "gold", sq: "c5", name: "ConocoPhillips (~$1.300M)", role: "Acreedor Arbitral" },
+            { id: "us_ng", type: "N", side: "gold", sq: "f6", name: "Casa Blanca / OFAC (Licencia 5Z)", role: "Suspende ejecución del Bono 2020 y controla el ritmo geopolítico", tag: "OFAC 5Z" },
+            { id: "us_rh", type: "R", side: "gold", sq: "h8", name: "Torre Judicial (ISDS)", role: "Ejecución de laudos" },
+            { id: "us_pa", type: "P", side: "gold", sq: "a7", name: "Reclamo Secundario", role: "Acreedores comerciales" },
+            { id: "us_pb", type: "P", side: "gold", sq: "b7", name: "Demanda Arbitral", role: "Litigio acumulado" },
+            { id: "us_pc", type: "P", side: "gold", sq: "c6", name: "Bono PDVSA 2020", role: "Suspendido por Licencia General 5Z" },
+            { id: "us_pd", type: "P", side: "gold", sq: "d6", name: "Orden de Venta", role: "Liquidación en curso" },
+            { id: "us_pe", type: "P", side: "gold", sq: "e6", name: "Intereses Acumulados", role: "Pasivos en ejecución" },
+            { id: "us_pf", type: "P", side: "gold", sq: "f7", name: "Embargo Preventivo", role: "Acciones sobre PDV Holding" },
+            { id: "us_pg", type: "P", side: "gold", sq: "g7", name: "Certeza de Cierre", role: "Prioridad judicial" },
+            { id: "us_ph", type: "P", side: "gold", sq: "h7", name: "Seguridad Jurídica", role: "Respaldo institucional" },
+            // VZLA
+            { id: "vz_ra", type: "R", side: "cyan", sq: "a1", name: "Refinería Lake Charles", role: "Infraestructura estratégica" },
+            { id: "vz_nb", type: "N", side: "cyan", sq: "b1", name: "Defensa Jurídica", role: "Representación legal" },
+            { id: "vz_bc", type: "B", side: "cyan", sq: "c1", name: "Principio de Bien Común", role: "Protección social" },
+            { id: "vz_q",  type: "Q", side: "cyan", sq: "d4", name: "Dama: CITGO (PDV Holding)", role: "En la mira directa de la Torre de Delaware", tag: "CITGO" },
+            { id: "vz_k",  type: "K", side: "cyan", sq: "e1", name: "Rey: Estado Venezolano", role: "Patrimonio Soberano" },
+            { id: "vz_bf", type: "B", side: "cyan", sq: "f1", name: "Autodeterminación Económica", role: "Reconstrucción nacional" },
+            { id: "vz_ng", type: "N", side: "cyan", sq: "g1", name: "Gobernanza Corporativa", role: "Gestión operativa" },
+            { id: "vz_rh", type: "R", side: "cyan", sq: "h1", name: "Refinería Corpus Christi", role: "Alta conversión" },
+            { id: "vz_pa", type: "P", side: "cyan", sq: "a2", name: "Peón: Población Vulnerable", role: "Ciudadanía expuesta" },
+            { id: "vz_pb", type: "P", side: "cyan", sq: "b2", name: "Peón: Servicios Esenciales", role: "Recursos vitales" },
+            { id: "vz_pc", type: "P", side: "cyan", sq: "c4", name: "Peón: Ciudadanía", role: "Expuesta al litigio" },
+            { id: "vz_pd", type: "P", side: "cyan", sq: "d3", name: "Peón: Reactivación Energética", role: "Defensa central" },
+            { id: "vz_pe", type: "P", side: "cyan", sq: "e4", name: "Peón: Crudo Merey", role: "Palanca energética en preparación" },
+            { id: "vz_pf", type: "P", side: "cyan", sq: "f2", name: "Peón: Empleo", role: "Sostenibilidad interna" },
+            { id: "vz_pg", type: "P", side: "cyan", sq: "g2", name: "Peón: Mercado Interno", role: "Estabilidad social" },
+            { id: "vz_ph", type: "P", side: "cyan", sq: "h2", name: "Peón: Futuro Generacional", role: "Patrimonio nacional" }
+          ]
+        }
+      },
+      {
+        id: 5,
+        dimension: "ANALOGÍA DEL AJEDREZ (PIEZAS 3 & 4)",
+        badgeClass: "badge-dimension-2",
+        moveTag: "Jugada 5 / 10 · Dinámica Geopolítica",
+        title: "Torres y Caballos en el Tablero de Delaware",
+        subtitle: "Cómo interactúan la trayectoria ortogonal predecible de los tribunales y el salto en 'L' discrecional del Poder Ejecutivo estadounidense.",
+        footer: "Cátedra: Taller de Negociación II — Dimensión 2 - Dinámica Geopolítica",
+        hudCode: "SALTO EN 'L': Nf6 → d5, Nb8 → c6",
+        hudName: "Torres Ortogonales vs. Caballos en 'L'",
+        hudDesc: "Las Torres avanzan en línea recta determinando embargos, pero el Caballo (OFAC 5V, 5Y, 5Z) salta en 'L' a d5 interponiéndose en la columna d.",
+        camera: { rotY: -0.65, rotX: 0.78, zoom: 1.12 },
+        bodyHTML: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-slate-900/95 border-l-4 border-amber-400 border border-slate-800">
+              <div class="flex items-center gap-2.5 mb-2.5">
+                <span class="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-xl text-amber-300">♖</span>
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Pieza 3 · Movimiento Ortogonal</span>
+                  <h3 class="text-base font-bold text-white">Las Torres: Corte de Delaware / Poder Judicial</h3>
+                </div>
+              </div>
+              <p class="text-xs text-slate-200 leading-relaxed">
+                Mecanismo <strong class="text-amber-300">recto y predecible</strong>. Avanzan ortogonalmente determinando deudas, embargos y subastas. Es la ejecución de laudos arbitrales más grande en la historia del <strong class="text-white">ISDS</strong> (Investor-State Dispute Settlement).
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900/95 border-l-4 border-sky-400 border border-slate-800">
+              <div class="flex items-center gap-2.5 mb-2.5">
+                <span class="w-9 h-9 rounded-lg bg-sky-500/20 border border-sky-500/40 flex items-center justify-center text-xl text-sky-300">♘</span>
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Pieza 4 · Salto en "L"</span>
+                  <h3 class="text-base font-bold text-white">Los Caballos: La Casa Blanca y la OFAC</h3>
+                </div>
+              </div>
+              <p class="text-xs text-slate-200 leading-relaxed">
+                Movimiento en <strong class="text-sky-300">"L" que salta piezas</strong>. Mediante licencias discrecionales (<strong class="text-white">5V, 5Y, 5Z</strong>), la OFAC altera el <em>timing</em>, <strong class="text-sky-300">frena a las Torres</strong> y controla el reloj político de la subasta.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center gap-3 text-xs text-sky-200">
+            <span class="text-xl">♞</span>
+            <span><strong>Geometría en el Tablero 3D:</strong> Mira el vector azul en forma de <strong>"L"</strong> (<code class="text-white font-mono">f6 → d5</code>): el Caballo de la OFAC salta sobre las piezas y se interpone en <code class="text-white font-mono">d5</code>, bloqueando la línea recta de la Torre de Delaware (<code class="text-white font-mono">d8 → d4</code>).</span>
+          </div>
+        `,
+        boardState: {
+          highlights: [
+            { sq: "d8", color: "rgba(245, 158, 11, 0.55)", label: "TORRE ISDS" },
+            { sq: "d5", color: "rgba(56, 189, 248, 0.65)", label: "CABALLO OFAC" },
+            { sq: "c6", color: "rgba(56, 189, 248, 0.45)", label: "LIC. 5V/5Y/5Z" },
+            { sq: "d4", color: "rgba(16, 185, 129, 0.45)", label: "CITGO" }
+          ],
+          arrows: [
+            { from: "d8", to: "d5", color: "#f59e0b", label: "Avance Recto ISDS" },
+            { from: "f6", to: "d5", color: "#38bdf8", label: "Salto en 'L' (Frena Torre)", isKnight: true },
+            { from: "b8", to: "c6", color: "#38bdf8", label: "Salto en 'L' (5V/5Y/5Z)", isKnight: true }
+          ],
+          pieces: [
+            { id: "us_ra", type: "R", side: "gold", sq: "d8", name: "Torre: Corte de Delaware", role: "Mecanismo recto y predecible — Mayor ejecución en historia del ISDS", tag: "TORRE" },
+            { id: "us_nb", type: "N", side: "gold", sq: "c6", name: "Caballo: Licencias 5V / 5Y", role: "Salto en 'L' que altera el timing jurídico", tag: "5V / 5Y" },
+            { id: "us_bc", type: "B", side: "gold", sq: "f5", name: "Crystallex (~$1.000M)", role: "Acreedor Arbitral" },
+            { id: "us_q",  type: "Q", side: "gold", sq: "b6", name: "Amber Energy (Elliott)", role: "Oferta aprobada" },
+            { id: "us_k",  type: "K", side: "gold", sq: "g8", name: "Rey: Élites Financieras", role: "Resguardado en enroque" },
+            { id: "us_bf", type: "B", side: "gold", sq: "c5", name: "ConocoPhillips (~$1.300M)", role: "Acreedor Arbitral" },
+            { id: "us_ng", type: "N", side: "gold", sq: "d5", name: "Caballo: Casa Blanca / OFAC (5Z)", role: "Salta en 'L', frena a las Torres y controla el reloj político", tag: "OFAC 5Z" },
+            { id: "us_rh", type: "R", side: "gold", sq: "e8", name: "Torre Judicial Secundaria", role: "Columna ortogonal de embargos", tag: "TORRE" },
+            { id: "us_pa", type: "P", side: "gold", sq: "a7", name: "Reclamo Secundario", role: "Acreedores comerciales" },
+            { id: "us_pb", type: "P", side: "gold", sq: "b7", name: "Demanda Arbitral", role: "Litigio acumulado" },
+            { id: "us_pc", type: "P", side: "gold", sq: "c7", name: "Bono PDVSA 2020", role: "Colateral congelado" },
+            { id: "us_pd", type: "P", side: "gold", sq: "d6", name: "Orden de Subasta", role: "Pausada por reloj político" },
+            { id: "us_pe", type: "P", side: "gold", sq: "e6", name: "Intereses Acumulados", role: "Pasivos en ejecución" },
+            { id: "us_pf", type: "P", side: "gold", sq: "f7", name: "Embargo Preventivo", role: "Acciones sobre PDV Holding" },
+            { id: "us_pg", type: "P", side: "gold", sq: "g7", name: "Certeza de Cierre", role: "Prioridad judicial" },
+            { id: "us_ph", type: "P", side: "gold", sq: "h7", name: "Seguridad Jurídica", role: "Respaldo institucional" },
+            // VZLA
+            { id: "vz_ra", type: "R", side: "cyan", sq: "a1", name: "Refinería Lake Charles", role: "Infraestructura estratégica" },
+            { id: "vz_nb", type: "N", side: "cyan", sq: "b1", name: "Defensa Jurídica", role: "Representación legal" },
+            { id: "vz_bc", type: "B", side: "cyan", sq: "c1", name: "Principio de Bien Común", role: "Protección social" },
+            { id: "vz_q",  type: "Q", side: "cyan", sq: "d4", name: "Dama: CITGO", role: "Protegida temporalmente por el salto del Caballo OFAC", tag: "CITGO" },
+            { id: "vz_k",  type: "K", side: "cyan", sq: "e1", name: "Rey: Estado Venezolano", role: "Patrimonio Soberano" },
+            { id: "vz_bf", type: "B", side: "cyan", sq: "f1", name: "Autodeterminación Económica", role: "Reconstrucción nacional" },
+            { id: "vz_ng", type: "N", side: "cyan", sq: "g1", name: "Gobernanza Corporativa", role: "Gestión operativa" },
+            { id: "vz_rh", type: "R", side: "cyan", sq: "h1", name: "Refinería Corpus Christi", role: "Alta conversión" },
+            { id: "vz_pa", type: "P", side: "cyan", sq: "a2", name: "Peón: Población Vulnerable", role: "Ciudadanía expuesta" },
+            { id: "vz_pb", type: "P", side: "cyan", sq: "b2", name: "Peón: Servicios Esenciales", role: "Recursos vitales" },
+            { id: "vz_pc", type: "P", side: "cyan", sq: "c4", name: "Peón: Ciudadanía", role: "Expuesta al litigio" },
+            { id: "vz_pd", type: "P", side: "cyan", sq: "d3", name: "Peón: Reactivación Energética", role: "Defensa central" },
+            { id: "vz_pe", type: "P", side: "cyan", sq: "e4", name: "Peón: Crudo Merey", role: "Palanca energética" },
+            { id: "vz_pf", type: "P", side: "cyan", sq: "f2", name: "Peón: Empleo", role: "Sostenibilidad interna" },
+            { id: "vz_pg", type: "P", side: "cyan", sq: "g2", name: "Peón: Mercado Interno", role: "Estabilidad social" },
+            { id: "vz_ph", type: "P", side: "cyan", sq: "h2", name: "Peón: Futuro Generacional", role: "Patrimonio nacional" }
+          ]
+        }
+      },
+      {
+        id: 6,
+        dimension: "BRECHA DE VALORACIÓN",
+        badgeClass: "badge-dimension-2",
+        moveTag: "Jugada 6 / 10 · Análisis Financiero",
+        title: "La Distorsión de Precio en la Subasta",
+        subtitle: "El sacrificio asimétrico de valor: liquidar forzosamente un complejo refinador de $15.100M por apenas $5.900M.",
+        footer: "Cátedra: Taller de Negociación II — Dimensión 2 - Análisis Financiero",
+        hudCode: "DISTORSIÓN: $5.900M vs. $15.100M",
+        hudName: "Amenaza de Captura con 61% de Descuento",
+        hudDesc: "La oferta aprobada en Delaware ($5.900M) destruye $9.200M de valor frente a la valoración real conservadora ($15.100M).",
+        camera: { rotY: 0.15, rotX: 0.60, zoom: 1.15 },
+        bodyHTML: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-rose-950/35 border border-rose-500/45">
+              <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Oferta Aprobada (Amber Energy - Nov 2025)</span>
+              <div class="text-3xl font-black text-white my-1.5 font-mono">$5.900M</div>
+              <p class="text-xs text-slate-300">Monto de liquidación forzosa en Corte de Delaware.</p>
+              <div class="mt-3 w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-rose-500 h-full rounded-full" style="width: 39%"></div>
+              </div>
+              <span class="text-xs text-rose-300 mt-1 inline-block">Solo 39% de su valor real</span>
+            </div>
+
+            <div class="p-4 rounded-xl bg-emerald-950/35 border border-emerald-500/45">
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Valoración Real de CITGO (Mayo 2026)</span>
+              <div class="text-3xl font-black text-emerald-300 my-1.5 font-mono">$15.100M</div>
+              <p class="text-xs text-slate-300">Valoración conservadora tras incremento del crudo.</p>
+              <div class="mt-3 w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-400 h-full rounded-full" style="width: 100%"></div>
+              </div>
+              <span class="text-xs text-emerald-300 mt-1 inline-block">100% Valoración Conservadora (+ $9.200M de brecha)</span>
+            </div>
+          </div>
+
+          <blockquote class="p-4 rounded-xl bg-slate-900/95 border-l-4 border-amber-400 border border-slate-800 text-xs sm:text-sm italic text-slate-200 leading-relaxed">
+            "La venta por $5.900 millones es claramente injusta: para CITGO, para el pueblo venezolano y para los acreedores que no podrán cobrar sus deudas."
+            <footer class="mt-2 not-italic font-semibold text-amber-400 text-xs">
+              — Carta de la representación legal de Venezuela al Juez Stark
+            </footer>
+          </blockquote>
+        `,
+        boardState: {
+          highlights: [
+            { sq: "b6", color: "rgba(244, 63, 94, 0.55)", label: "OFERTA $5.900M" },
+            { sq: "d4", color: "rgba(16, 185, 129, 0.65)", label: "VALOR $15.100M" }
+          ],
+          arrows: [
+            { from: "b6", to: "d4", color: "#f43f5e", label: "Liquidación Forzosa (-$9.200M)" }
+          ],
+          pieces: [
+            { id: "us_ra", type: "R", side: "gold", sq: "d8", name: "Corte de Delaware", role: "Subasta forzosa" },
+            { id: "us_nb", type: "N", side: "gold", sq: "c6", name: "Caballo OFAC", role: "Licencias 5V/5Y/5Z" },
+            { id: "us_bc", type: "B", side: "gold", sq: "f5", name: "Crystallex (~$1.000M)", role: "Acreedor con prioridad" },
+            { id: "us_q",  type: "Q", side: "gold", sq: "b6", name: "Oferta Amber Energy ($5.900M)", role: "Monto de liquidación forzosa en Corte de Delaware (Nov 2025)", tag: "$5.900M" },
+            { id: "us_k",  type: "K", side: "gold", sq: "g8", name: "Rey: Elliott Management", role: "Fondo comprador con fuerte descuento" },
+            { id: "us_bf", type: "B", side: "gold", sq: "c5", name: "ConocoPhillips (~$1.300M)", role: "Acreedor Arbitral" },
+            { id: "us_ng", type: "N", side: "gold", sq: "d5", name: "Caballo Casa Blanca / OFAC", role: "Reloj político" },
+            { id: "us_rh", type: "R", side: "gold", sq: "e8", name: "Acreedores Restantes", role: "No logran cobrar sus deudas con $5.900M" },
+            { id: "us_pa", type: "P", side: "gold", sq: "a7", name: "Acreedores Excluidos", role: "Sin cobertura en remate" },
+            { id: "us_pb", type: "P", side: "gold", sq: "b7", name: "Demanda Arbitral", role: "Litigio acumulado" },
+            { id: "us_pc", type: "P", side: "gold", sq: "c7", name: "Bono PDVSA 2020", role: "Colateral congelado" },
+            { id: "us_pd", type: "P", side: "gold", sq: "d6", name: "Brecha de Valoración", role: "Pérdida de $9.200M" },
+            { id: "us_pe", type: "P", side: "gold", sq: "e6", name: "Intereses Acumulados", role: "Pasivos en ejecución" },
+            { id: "us_pf", type: "P", side: "gold", sq: "f7", name: "Embargo Preventivo", role: "Acciones sobre PDV Holding" },
+            { id: "us_pg", type: "P", side: "gold", sq: "g7", name: "Certeza de Cierre", role: "Prioridad judicial" },
+            { id: "us_ph", type: "P", side: "gold", sq: "h7", name: "Seguridad Jurídica", role: "Respaldo institucional" },
+            // VZLA
+            { id: "vz_ra", type: "R", side: "cyan", sq: "a1", name: "Refinería Lake Charles", role: "Infraestructura estratégica" },
+            { id: "vz_nb", type: "N", side: "cyan", sq: "b1", name: "Defensa Jurídica", role: "Carta al Juez Stark denunciando venta injusta" },
+            { id: "vz_bc", type: "B", side: "cyan", sq: "c1", name: "Principio de Bien Común", role: "Protección social" },
+            { id: "vz_q",  type: "Q", side: "cyan", sq: "d4", name: "Dama: CITGO ($15.100M)", role: "Valoración conservadora en Mayo 2026 tras incremento del crudo", tag: "$15.100M" },
+            { id: "vz_k",  type: "K", side: "cyan", sq: "e1", name: "Rey: Estado Venezolano", role: "Patrimonio Soberano" },
+            { id: "vz_bf", type: "B", side: "cyan", sq: "f1", name: "Autodeterminación Económica", role: "Reconstrucción nacional" },
+            { id: "vz_ng", type: "N", side: "cyan", sq: "g1", name: "Gobernanza Corporativa", role: "Gestión operativa" },
+            { id: "vz_rh", type: "R", side: "cyan", sq: "h1", name: "Refinería Corpus Christi", role: "Alta conversión" },
+            { id: "vz_pa", type: "P", side: "cyan", sq: "a2", name: "Peón: Población Vulnerable", role: "Ciudadanía expuesta" },
+            { id: "vz_pb", type: "P", side: "cyan", sq: "b2", name: "Peón: Servicios Esenciales", role: "Recursos vitales" },
+            { id: "vz_pc", type: "P", side: "cyan", sq: "c4", name: "Peón: Ciudadanía", role: "Expuesta al litigio" },
+            { id: "vz_pd", type: "P", side: "cyan", sq: "d3", name: "Peón: Reactivación Energética", role: "Defensa central" },
+            { id: "vz_pe", type: "P", side: "cyan", sq: "e4", name: "Peón: Crudo Merey", role: "Palanca energética lista para avanzar" },
+            { id: "vz_pf", type: "P", side: "cyan", sq: "f2", name: "Peón: Empleo", role: "Sostenibilidad interna" },
+            { id: "vz_pg", type: "P", side: "cyan", sq: "g2", name: "Peón: Mercado Interno", role: "Estabilidad social" },
+            { id: "vz_ph", type: "P", side: "cyan", sq: "h2", name: "Peón: Futuro Generacional", role: "Patrimonio nacional" }
+          ]
+        }
+      },
+      {
+        id: 7,
+        dimension: "DIMENSIÓN 3: NEGOCIACIÓN ASIMÉTRICA",
+        badgeClass: "badge-dimension-3",
+        moveTag: "Jugada 7 / 10 · Marco Zartman-Rubin",
+        title: "Estructura Asimétrica y la Palanca Técnica",
+        subtitle: "Cómo el actor estructuralmente débil compensa la coerción jurisdiccional mediante una ventaja técnica irreemplazable: la dieta de Crudo Merey.",
+        footer: "Cátedra: Taller de Negociación II — Dimensión 3 Marco Zartman-Rubin",
+        hudCode: "RUPTURA TÉCNICA: e4 → e6",
+        hudName: "Avance del Peón Crudo Merey",
+        hudDesc: "Las refinerías Lake Charles y Corpus Christi están diseñadas para crudo pesado venezolano. El Peón e6 activa la palanca del crack spread.",
+        camera: { rotY: -0.35, rotX: 0.65, zoom: 1.08 },
+        bodyHTML: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            <div class="p-4 rounded-xl bg-slate-900/95 border border-amber-500/40">
+              <div class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">Bloque Poderoso</div>
+              <h3 class="text-sm font-bold text-white mb-2.5">EE.UU. & Acreedores Internacionales</h3>
+              <ul class="space-y-1.5 text-xs text-slate-200">
+                <li class="flex items-center gap-2"><span class="text-amber-400">●</span> Jurisdicción territorial y coerción.</li>
+                <li class="flex items-center gap-2"><span class="text-amber-400">●</span> Respaldo de justicia norteamericana.</li>
+                <li class="flex items-center gap-2"><span class="text-amber-400">●</span> Presión de sanciones económicas.</li>
+              </ul>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900/95 border border-cyan-500/40">
+              <div class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-1">Actor Débil</div>
+              <h3 class="text-sm font-bold text-white mb-2.5">República Bolivariana de Venezuela</h3>
+              <ul class="space-y-1.5 text-xs text-slate-200">
+                <li class="flex items-center gap-2"><span class="text-cyan-400">●</span> Restricción de liquidez internacional.</li>
+                <li class="flex items-center gap-2"><span class="text-cyan-400">●</span> Acceso limitado al sistema bancario.</li>
+                <li class="flex items-center gap-2"><span class="text-cyan-400">●</span> Riesgo inminente de embargo.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-gradient-to-r from-emerald-950/60 via-slate-900 to-slate-900 border-l-4 border-emerald-400 border border-emerald-500/40">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">⚡ La Palanca Técnica de Compensación: Crudo Merey</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold">Crack Spread</span>
+            </div>
+            <p class="text-xs text-slate-200 leading-relaxed">
+              Las refinerías de CITGO (<strong class="text-white">Lake Charles, Corpus Christi</strong>) están diseñadas para crudos pesados. El suministro de crudo venezolano optimiza los márgenes de refinación (<em>crack spread</em>), otorgando a Venezuela una <strong class="text-emerald-300">palanca de eficiencia y generación de valor</strong>, no de supervivencia.
+            </p>
+          </div>
+        `,
+        boardState: {
+          highlights: [
+            { sq: "e6", color: "rgba(16, 185, 129, 0.65)", label: "CRUDO MEREY" },
+            { sq: "c3", color: "rgba(6, 182, 212, 0.45)", label: "LAKE CHARLES" },
+            { sq: "f3", color: "rgba(6, 182, 212, 0.45)", label: "CORPUS CHRISTI" }
+          ],
+          arrows: [
+            { from: "e4", to: "e6", color: "#10b981", label: "Palanca Crudo Merey" },
+            { from: "c3", to: "e6", color: "#06b6d4", label: "Lake Charles" },
+            { from: "f3", to: "e6", color: "#06b6d4", label: "Corpus Christi" }
+          ],
+          pieces: [
+            { id: "us_ra", type: "R", side: "gold", sq: "d8", name: "Corte de Delaware", role: "Jurisdicción territorial y coerción" },
+            { id: "us_nb", type: "N", side: "gold", sq: "c6", name: "Sanciones Económicas", role: "Presión del Bloque Poderoso" },
+            { id: "us_bc", type: "B", side: "gold", sq: "f5", name: "Crystallex (~$1.000M)", role: "Respaldo de justicia norteamericana" },
+            { id: "us_q",  type: "Q", side: "gold", sq: "b6", name: "Amber Energy", role: "Oferta de liquidación" },
+            { id: "us_k",  type: "K", side: "gold", sq: "g8", name: "Rey: Bloque Poderoso", role: "EE.UU. & Acreedores Internacionales" },
+            { id: "us_bf", type: "B", side: "gold", sq: "c5", name: "ConocoPhillips (~$1.300M)", role: "Acreedor Arbitral" },
+            { id: "us_ng", type: "N", side: "gold", sq: "d5", name: "Caballo OFAC", role: "Control regulatorio" },
+            { id: "us_rh", type: "R", side: "gold", sq: "f8", name: "Sistema Financiero EE.UU.", role: "Restricción de acceso bancario" },
+            { id: "us_pa", type: "P", side: "gold", sq: "a7", name: "Reclamo Secundario", role: "Acreedores comerciales" },
+            { id: "us_pb", type: "P", side: "gold", sq: "b7", name: "Demanda Arbitral", role: "Litigio acumulado" },
+            { id: "us_pc", type: "P", side: "gold", sq: "c7", name: "Bono PDVSA 2020", role: "Colateral congelado" },
+            { id: "us_pd", type: "P", side: "gold", sq: "d6", name: "Riesgo de Embargo", role: "Presión sobre el Actor Débil" },
+            { id: "us_pf", type: "P", side: "gold", sq: "f7", name: "Embargo Preventivo", role: "Acciones sobre PDV Holding" },
+            { id: "us_pg", type: "P", side: "gold", sq: "g7", name: "Certeza de Cierre", role: "Prioridad judicial" },
+            { id: "us_ph", type: "P", side: "gold", sq: "h7", name: "Seguridad Jurídica", role: "Respaldo institucional" },
+            // VZLA
+            { id: "vz_ra", type: "R", side: "cyan", sq: "c3", name: "Refinería Lake Charles", role: "Diseñada para procesar crudo pesado venezolano", tag: "LAKE CHARLES" },
+            { id: "vz_nb", type: "N", side: "cyan", sq: "b1", name: "Defensa Jurídica", role: "Representación legal" },
+            { id: "vz_bc", type: "B", side: "cyan", sq: "c1", name: "Principio de Bien Común", role: "Protección social" },
+            { id: "vz_q",  type: "Q", side: "cyan", sq: "d4", name: "Dama: CITGO", role: "Optimiza su crack spread con dieta pesada", tag: "CITGO" },
+            { id: "vz_k",  type: "K", side: "cyan", sq: "e1", name: "Rey: Actor Débil (Venezuela)", role: "Compensa asimetría mediante palanca técnica" },
+            { id: "vz_bf", type: "B", side: "cyan", sq: "f1", name: "Autodeterminación Económica", role: "Reconstrucción nacional" },
+            { id: "vz_ng", type: "N", side: "cyan", sq: "g1", name: "Gobernanza Corporativa", role: "Gestión operativa" },
+            { id: "vz_rh", type: "R", side: "cyan", sq: "f3", name: "Refinería Corpus Christi", role: "Maximiza márgenes con suministro Merey", tag: "CORPUS CHRISTI" },
+            { id: "vz_pa", type: "P", side: "cyan", sq: "a2", name: "Peón: Población Vulnerable", role: "Ciudadanía expuesta" },
+            { id: "vz_pb", type: "P", side: "cyan", sq: "b2", name: "Peón: Servicios Esenciales", role: "Recursos vitales" },
+            { id: "vz_pc", type: "P", side: "cyan", sq: "c4", name: "Peón: Ciudadanía", role: "Expuesta al litigio" },
+            { id: "vz_pd", type: "P", side: "cyan", sq: "d3", name: "Peón: Reactivación Energética", role: "Defensa central" },
+            { id: "vz_pe", type: "P", side: "cyan", sq: "e6", name: "Peón Pasado: Crudo Merey", role: "Palanca de eficiencia y generación de valor (Crack Spread)", tag: "MEREY" },
+            { id: "vz_pf", type: "P", side: "cyan", sq: "f2", name: "Peón: Empleo", role: "Sostenibilidad interna" },
+            { id: "vz_pg", type: "P", side: "cyan", sq: "g2", name: "Peón: Mercado Interno", role: "Estabilidad social" },
+            { id: "vz_ph", type: "P", side: "cyan", sq: "h2", name: "Peón: Futuro Generacional", role: "Patrimonio nacional" }
+          ]
+        }
+      },
+      {
+        id: 8,
+        dimension: "ANALOGÍA DEL AJEDREZ (ESTRATEGIA FINAL)",
+        badgeClass: "badge-dimension-3",
+        moveTag: "Jugada 8 / 10 · Salida Negociada",
+        title: "El Peón en Coronación y el Pacto de Tablas",
+        subtitle: "Cómo el peón en séptima casilla transforma la correlación de fuerzas y conduce racionalmente a detener el remate.",
+        footer: "Cátedra: Taller de Negociación II — Dimensión 3 - Salida Negociada",
+        hudCode: "CORONACIÓN: Pe6 → e7! (Amenaza e8=Q)",
+        hudName: "Peón en 7ma Casilla & Pacto de Tablas",
+        hudDesc: "El Peón Merey llega a e7 (7ma fila). Adquirir CITGO sin ese crudo reduce el margen operativo: se abre el Pacto de Tablas.",
+        camera: { rotY: 0.42, rotX: 0.58, zoom: 1.14 },
+        bodyHTML: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-slate-900/95 border-l-4 border-emerald-400 border border-slate-800">
+              <div class="flex items-center gap-2.5 mb-2.5">
+                <span class="w-9 h-9 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-xl text-emerald-300">♙→♕</span>
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Amenaza Táctica en 7ma Casilla</span>
+                  <h3 class="text-base font-bold text-white">Peón en Coronación: Optimización de Márgenes</h3>
+                </div>
+              </div>
+              <p class="text-xs text-slate-200 leading-relaxed">
+                La capacidad de alimentar las plantas con <strong class="text-emerald-300">dieta pesada con descuento</strong> actúa como un <strong class="text-white">peón en 7ma casilla</strong>. Adquirir una refinería sin ese crudo reduce el margen operativo y compromete el pago futuro a acreedores.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-900/95 border-l-4 border-amber-400 border border-slate-800">
+              <div class="flex items-center gap-2.5 mb-2.5">
+                <span class="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-xl text-amber-300">½-½</span>
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Equilibrio de Nash / Zartman</span>
+                  <h3 class="text-base font-bold text-white">Pacto de Tablas: Reorganización Sostenible</h3>
+                </div>
+              </div>
+              <p class="text-xs text-slate-200 leading-relaxed">
+                Evita la <strong class="text-amber-300">destrucción mutua</strong>. En lugar del remate desvalorizado, las partes acuerdan <strong class="text-white">reorganizar la deuda</strong>, deteniendo la subasta a cambio de un flujo recurrente respaldado por las operaciones de refinación.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-3 text-xs text-emerald-200">
+            <span class="text-xl">👑</span>
+            <span><strong>Jugada Decisiva en 3D:</strong> El Peón en <code class="text-white font-mono">e7</code> está a un paso de coronar en <code class="text-white font-mono">e8</code>. Esto obliga al Bloque Acreedor a negociar un <strong>Pacto de Tablas (Reorganización Sostenible)</strong> en vez de capturar una refinería sin suministro óptimo.</span>
+          </div>
+        `,
+        boardState: {
+          highlights: [
+            { sq: "e7", color: "rgba(16, 185, 129, 0.75)", label: "PEÓN EN 7MA" },
+            { sq: "e8", color: "rgba(245, 158, 11, 0.65)", label: "CORONACIÓN" },
+            { sq: "d4", color: "rgba(6, 182, 212, 0.55)", label: "PACTO TABLAS" }
+          ],
+          arrows: [
+            { from: "e6", to: "e7", color: "#10b981", label: "Peón en 7ma Casilla" },
+            { from: "e7", to: "e8", color: "#fbbf24", label: "Coronación (Flujo de Caja)" }
+          ],
+          pieces: [
+            { id: "us_ra", type: "R", side: "gold", sq: "d8", name: "Corte de Delaware", role: "Suspende remate ante acuerdo de reorganización" },
+            { id: "us_nb", type: "N", side: "gold", sq: "c6", name: "Caballo OFAC", role: "Viabiliza licencias operativas" },
+            { id: "us_bc", type: "B", side: "gold", sq: "f5", name: "Crystallex (~$1.000M)", role: "Acreedor beneficiado por flujo recurrente" },
+            { id: "us_q",  type: "Q", side: "gold", sq: "b6", name: "Consorcio Acreedor", role: "Prefiere cobro sostenible sobre remate litigioso" },
+            { id: "us_k",  type: "K", side: "gold", sq: "g8", name: "Rey: Bloque Acreedor", role: "Acepta Pacto de Tablas para maximizar recupero" },
+            { id: "us_bf", type: "B", side: "gold", sq: "c5", name: "ConocoPhillips (~$1.300M)", role: "Acreedor Arbitral" },
+            { id: "us_ng", type: "N", side: "gold", sq: "d5", name: "Casa Blanca / OFAC", role: "Garante regulatorio del acuerdo" },
+            { id: "us_rh", type: "R", side: "gold", sq: "f8", name: "Fideicomiso de Acreedores", role: "Recibe flujo respaldado por refinación" },
+            { id: "us_pa", type: "P", side: "gold", sq: "a7", name: "Reclamo Secundario", role: "Incluido en reestructuración" },
+            { id: "us_pb", type: "P", side: "gold", sq: "b7", name: "Demanda Arbitral", role: "Incluida en acuerdo" },
+            { id: "us_pc", type: "P", side: "gold", sq: "c7", name: "Bono PDVSA 2020", role: "Reestructurado en el acuerdo" },
+            { id: "us_pd", type: "P", side: "gold", sq: "d6", name: "Congelamiento de Subasta", role: "Evita destrucción mutua" },
+            { id: "us_pf", type: "P", side: "gold", sq: "f7", name: "Seguridad de Cobro", role: "Respaldado por EBITDA" },
+            { id: "us_pg", type: "P", side: "gold", sq: "g7", name: "Estabilidad Operativa", role: "Continuidad industrial" },
+            { id: "us_ph", type: "P", side: "gold", sq: "h7", name: "Seguridad Jurídica", role: "Acuerdo vinculante" },
+            // VZLA
+            { id: "vz_ra", type: "R", side: "cyan", sq: "c3", name: "Refinería Lake Charles", role: "Alimentada con dieta pesada Merey" },
+            { id: "vz_nb", type: "N", side: "cyan", sq: "b1", name: "Defensa Jurídica", role: "Articula propuesta de reorganización" },
+            { id: "vz_bc", type: "B", side: "cyan", sq: "c1", name: "Principio de Bien Común", role: "Preserva el activo nacional" },
+            { id: "vz_q",  type: "Q", side: "cyan", sq: "d4", name: "Dama: CITGO (Preservada)", role: "Generadora de flujo recurrente para ambas partes", tag: "TABLAS ½-½" },
+            { id: "vz_k",  type: "K", side: "cyan", sq: "e1", name: "Rey: Estado Venezolano", role: "Conserva titularidad accionaria" },
+            { id: "vz_bf", type: "B", side: "cyan", sq: "f1", name: "Autodeterminación Económica", role: "Reconstrucción nacional" },
+            { id: "vz_ng", type: "N", side: "cyan", sq: "g1", name: "Gobernanza Corporativa", role: "Transparencia y auditoría" },
+            { id: "vz_rh", type: "R", side: "cyan", sq: "f3", name: "Refinería Corpus Christi", role: "Alta rentabilidad operativa" },
+            { id: "vz_pa", type: "P", side: "cyan", sq: "a2", name: "Peón: Población Vulnerable", role: "Protegida del despojo forzoso" },
+            { id: "vz_pb", type: "P", side: "cyan", sq: "b2", name: "Peón: Servicios Esenciales", role: "Recursos vitales" },
+            { id: "vz_pc", type: "P", side: "cyan", sq: "c4", name: "Peón: Ciudadanía", role: "Beneficiaria de estabilidad" },
+            { id: "vz_pd", type: "P", side: "cyan", sq: "d3", name: "Peón: Reactivación Energética", role: "Sostenibilidad" },
+            { id: "vz_pe", type: "P", side: "cyan", sq: "e7", name: "Peón en 7ma: Crudo Merey", role: "Optimización de márgenes a un paso de Coronación", tag: "7MA CASILLA" },
+            { id: "vz_pf", type: "P", side: "cyan", sq: "f2", name: "Peón: Empleo", role: "Sostenibilidad interna" },
+            { id: "vz_pg", type: "P", side: "cyan", sq: "g2", name: "Peón: Mercado Interno", role: "Estabilidad social" },
+            { id: "vz_ph", type: "P", side: "cyan", sq: "h2", name: "Peón: Futuro Generacional", role: "Patrimonio nacional" }
+          ]
+        }
+      },
+      {
+        id: 9,
+        dimension: "REQUISITO TRANSVERSAL",
+        badgeClass: "badge-transversal",
+        moveTag: "Jugada 9 / 10 · Matriz de Concesiones Mutuas",
+        title: "Matriz de Intercambio (Ganar - Ganar)",
+        subtitle: "Arquitectura de concesiones recíprocas en tres vectores estratégicos: Suministro Energético, Plan de Pagos y Gobernanza.",
+        footer: "Cátedra: Taller de Negociación II — Matriz de Concesiones Mutuas",
+        hudCode: "SIMETRÍA: 3 Vectores (Cols C, E, G)",
+        hudName: "Matriz Ganar-Ganar en el Tablero",
+        hudDesc: "Las piezas se alinean en 3 corredores cooperativos: Suministro (Col C), Escrow EBITDA vs. Haircut 50% (Col E) y Gobernanza vs. 100% Propiedad (Col G).",
+        camera: { rotY: 0.0, rotX: 0.82, zoom: 1.08 },
+        bodyHTML: `
+          <div class="overflow-x-auto rounded-xl border border-slate-700/80 bg-slate-900/95">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-950 border-b border-slate-800 text-slate-300 uppercase tracking-wider">
+                  <th class="p-3 font-bold text-purple-300">Vector</th>
+                  <th class="p-3 font-bold text-cyan-300">Concesiones de Venezuela (Actor Débil)</th>
+                  <th class="p-3 font-bold text-amber-300">Concesiones EE.UU. / Acreedores (Bloque Poderoso)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/80 text-slate-200">
+                <tr class="hover:bg-slate-800/40 transition">
+                  <td class="p-3 font-bold text-white whitespace-nowrap">⚡ Suministro Energético<br/><span class="text-xs font-normal text-slate-400">Columna C</span></td>
+                  <td class="p-3">Suministro garantizado a largo plazo de <strong class="text-cyan-300">crudo Merey</strong> a precios competitivos para CITGO.</td>
+                  <td class="p-3">Emisión de <strong class="text-amber-300">licencias definitivas OFAC</strong> para operaciones comerciales y refinación.</td>
+                </tr>
+                <tr class="hover:bg-slate-800/40 transition">
+                  <td class="p-3 font-bold text-white whitespace-nowrap">💰 Plan de Pagos<br/><span class="text-xs font-normal text-slate-400">Columna E</span></td>
+                  <td class="p-3"><strong class="text-cyan-300">Fideicomiso (Escrow Account)</strong> asignando 40%-50% del EBITDA (<strong class="text-white">$2.320M-$2.900M/año</strong>).</td>
+                  <td class="p-3"><strong class="text-amber-300">Condonación parcial (haircut 50%)</strong>, extensión a 15-20 años y congelamiento de subasta.</td>
+                </tr>
+                <tr class="hover:bg-slate-800/40 transition">
+                  <td class="p-3 font-bold text-white whitespace-nowrap">🏛️ Gobernanza<br/><span class="text-xs font-normal text-slate-400">Columna G</span></td>
+                  <td class="p-3"><strong class="text-cyan-300">Directores independientes</strong> en la junta directiva y auditoría internacional.</td>
+                  <td class="p-3">Conservación del <strong class="text-amber-300">100% de la propiedad accionaria</strong> en manos del Estado venezolano.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        `,
+        boardState: {
+          highlights: [
+            { sq: "c4", color: "rgba(6, 182, 212, 0.45)", label: "CRUDO MEREY" },
+            { sq: "c6", color: "rgba(245, 158, 11, 0.45)", label: "LICENCIA OFAC" },
+            { sq: "e4", color: "rgba(6, 182, 212, 0.45)", label: "ESCROW EBITDA" },
+            { sq: "e6", color: "rgba(245, 158, 11, 0.45)", label: "HAIRCUT 50%" },
+            { sq: "g4", color: "rgba(6, 182, 212, 0.45)", label: "AUDITORÍA IND." },
+            { sq: "g6", color: "rgba(245, 158, 11, 0.45)", label: "100% PROPIEDAD" }
+          ],
+          arrows: [
+            { from: "c4", to: "c6", color: "#10b981", label: "Vector 1: Suministro" },
+            { from: "e4", to: "e6", color: "#38bdf8", label: "Vector 2: Escrow / Haircut" },
+            { from: "g4", to: "g6", color: "#c084fc", label: "Vector 3: Gobernanza" }
+          ],
+          pieces: [
+            // Vector 1 (Col C)
+            { id: "us_nb", type: "N", side: "gold", sq: "c6", name: "Licencias Definitivas OFAC", role: "Concesión EE.UU.: Autorización para operaciones comerciales y refinación", tag: "OFAC DEF." },
+            { id: "vz_pe", type: "P", side: "cyan", sq: "c4", name: "Suministro Crudo Merey LP", role: "Concesión VZLA: Dieta pesada garantizada a precios competitivos", tag: "MEREY LP" },
+            // Vector 2 (Col E)
+            { id: "us_ra", type: "R", side: "gold", sq: "e6", name: "Haircut 50% + Plazo 15-20 Años", role: "Concesión Acreedores: Condonación parcial y congelamiento de subasta", tag: "HAIRCUT 50%" },
+            { id: "vz_ra", type: "R", side: "cyan", sq: "e4", name: "Escrow 40%-50% EBITDA", role: "Concesión VZLA: Fideicomiso de $2.320M-$2.900M/año", tag: "ESCROW" },
+            // Vector 3 (Col G)
+            { id: "us_k",  type: "K", side: "gold", sq: "g6", name: "Reconocimiento 100% Propiedad", role: "Concesión Bloque Poderoso: Conservación del 100% accionario para Venezuela", tag: "100% ACCIONES" },
+            { id: "vz_ng", type: "N", side: "cyan", sq: "g4", name: "Junta Independiente & Auditoría", role: "Concesión VZLA: Directores independientes y auditoría internacional", tag: "GOBERNANZA" },
+            // Supporting Pieces
+            { id: "vz_q",  type: "Q", side: "cyan", sq: "d4", name: "Dama: CITGO Operativa", role: "Centro generador de valor para el acuerdo Ganar-Ganar", tag: "CITGO" },
+            { id: "vz_k",  type: "K", side: "cyan", sq: "d2", name: "Rey: Estado Venezolano", role: "Conserva el 100% de la propiedad accionaria" },
+            { id: "us_q",  type: "Q", side: "gold", sq: "d7", name: "Consorcio Acreedor", role: "Asegura flujo constante auditado" },
+            { id: "us_bc", type: "B", side: "gold", sq: "b7", name: "Crystallex", role: "Cobro estructurado en fideicomiso" },
+            { id: "us_bf", type: "B", side: "gold", sq: "f7", name: "ConocoPhillips", role: "Cobro estructurado en fideicomiso" },
+            { id: "vz_rh", type: "R", side: "cyan", sq: "a3", name: "Refinería Lake Charles", role: "Plena capacidad operativa" },
+            { id: "vz_bc", type: "B", side: "cyan", sq: "h3", name: "Refinería Corpus Christi", role: "Plena capacidad operativa" }
+          ]
+        }
+      },
+      {
+        id: 10,
+        dimension: "ANÁLISIS FINANCIERO",
+        badgeClass: "badge-dimension-3",
+        moveTag: "Jugada 10 / 10 · Equilibrio Económico Final",
+        title: "Cálculo del Equilibrio Económico",
+        subtitle: "La Paradoja Económica demostrada: por qué la reestructuración negociada a 15 años supera radicalmente a la subasta forzosa.",
+        footer: "Cátedra: Taller de Negociación II — Conclusión y Equilibrio Económico",
+        hudCode: "EQUILIBRIO: $10.000M vs. $5.900M",
+        hudName: "Victoria Cooperativa (Win-Win)",
+        hudDesc: "Rematar CITGO por $5.900M equivale a venderla por solo 1 año de su EBITDA proyectado ($5.800M). El acuerdo genera $10.000M y preserva el activo.",
+        camera: { rotY: 0.48, rotX: 0.64, zoom: 1.06 },
+        bodyHTML: `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl bg-slate-900/95 border border-rose-500/40">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Subasta Forzosa (Estatus Quo)</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-rose-500/20 text-rose-300">Suma Cero / Destrucción</span>
+              </div>
+              <div class="text-3xl font-black text-rose-300 my-1.5 font-mono">$5.900M</div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Pago único fragmentado entre múltiples acreedores tras años de disputas. <strong class="text-white">Pérdida total del activo para Venezuela.</strong>
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-gradient-to-b from-emerald-950/45 to-slate-900/95 border border-emerald-500/50 cyan-glow">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Reestructuración Negociada (15 Años)</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">+69.5% Recupero</span>
+              </div>
+              <div class="text-3xl font-black text-emerald-300 my-1.5 font-mono">$10.000M</div>
+              <p class="text-xs text-slate-200 leading-relaxed">
+                Retorno sostenible para acreedores (<strong class="text-emerald-300">~$667M/año</strong>, equivale al <strong class="text-white">11.5% del EBITDA anual proyectado de $5.800M</strong>).
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-gradient-to-r from-amber-500/15 via-emerald-500/15 to-cyan-500/15 border border-amber-400/50 text-xs sm:text-sm text-slate-100 leading-relaxed shadow-lg">
+            <strong class="text-amber-300 uppercase tracking-wider block mb-1">💡 La Paradoja Económica:</strong>
+            Rematar CITGO por <strong class="text-white font-mono">$5.900M</strong> equivale a venderla por <strong class="text-amber-300">solo un año de su EBITDA proyectado ($5.800M)</strong>. Un acuerdo preserva el activo y multiplica el recupero financiero real de los acreedores.
+          </div>
+        `,
+        boardState: {
+          highlights: [
+            { sq: "d4", color: "rgba(16, 185, 129, 0.7)", label: "EBITDA $5.800M/AÑO" },
+            { sq: "e4", color: "rgba(245, 158, 11, 0.55)", label: "RETORNO $10.000M" },
+            { sq: "d5", color: "rgba(56, 189, 248, 0.55)", label: "~$667M / AÑO" }
+          ],
+          arrows: [
+            { from: "d4", to: "e4", color: "#10b981", label: "11.5% EBITDA ($667M/año)" },
+            { from: "e4", to: "d5", color: "#f59e0b", label: "$10.000M en 15 Años" }
+          ],
+          pieces: [
+            { id: "vz_q",  type: "Q", side: "cyan", sq: "d4", name: "CITGO Preservada (EBITDA $5.800M/año)", role: "100% Propiedad Venezolana + Generación de Flujo Sostenible", tag: "$5.800M/AÑO" },
+            { id: "vz_k",  type: "K", side: "cyan", sq: "c3", name: "Rey: Patrimonio Venezolano", role: "Preserva el activo estratégico para la reconstrucción nacional" },
+            { id: "us_k",  type: "K", side: "gold", sq: "e5", name: "Rey: Acreedores Reestructurados", role: "Multiplican su recupero financiero real a $10.000M", tag: "$10.000M" },
+            { id: "us_q",  type: "Q", side: "gold", sq: "d5", name: "Fideicomiso de Pago (~$667M/año)", role: "Equivalente a solo el 11.5% del EBITDA anual proyectado", tag: "$667M/AÑO" },
+            { id: "vz_pe", type: "P", side: "cyan", sq: "e4", name: "Crudo Merey & Refinación", role: "Motor operativo del acuerdo a 15 años" },
+            { id: "us_ng", type: "N", side: "gold", sq: "f5", name: "Licencias OFAC Estables", role: "Seguridad regulatoria plurianual" },
+            { id: "us_ra", type: "R", side: "gold", sq: "c5", name: "Corte de Delaware (Acuerdo Homologado)", role: "Suspensión definitiva de subasta forzosa" },
+            { id: "vz_ra", type: "R", side: "cyan", sq: "b3", name: "Refinería Lake Charles", role: "Operando con márgenes óptimos" },
+            { id: "vz_rh", type: "R", side: "cyan", sq: "f3", name: "Refinería Corpus Christi", role: "Operando con márgenes óptimos" },
+            { id: "vz_ng", type: "N", side: "cyan", sq: "d3", name: "Junta Directiva Independiente", role: "Auditoría internacional y transparencia" }
+          ]
+        }
+      }
+    ];
+
+    // =========================================================================
+    // 2. PRESENTATION CONTROLLER & UI NAVIGATION
+    // =========================================================================
+    let currentSlideIndex = 0;
+    let autoPlayTimer = null;
+    let isBoardExpanded = false;
+
+    function initNavigation() {
+      const container = document.getElementById("stepDotsContainer");
+      container.innerHTML = "";
+      SLIDES.forEach((s, idx) => {
+        const btn = document.createElement("button");
+        btn.className = `step-dot w-7 h-7 rounded-lg text-xs font-mono flex items-center justify-center ${
+          idx === currentSlideIndex ? "active" : "bg-slate-800/90 text-slate-400 hover:bg-slate-700 hover:text-white"
+        }`;
+        btn.textContent = idx + 1;
+        btn.title = `${idx + 1}. ${s.title}`;
+        btn.onclick = () => goToSlide(idx);
+        container.appendChild(btn);
+      });
+    }
+
+    function goToSlide(index) {
+      if (index < 0 || index >= SLIDES.length) return;
+      currentSlideIndex = index;
+      const slide = SLIDES[index];
+
+      // Update Step Dots
+      const dots = document.querySelectorAll("#stepDotsContainer .step-dot");
+      dots.forEach((d, i) => {
+        if (i === index) {
+          d.className = "step-dot active w-7 h-7 rounded-lg text-xs font-mono flex items-center justify-center";
+        } else {
+          d.className = "step-dot w-7 h-7 rounded-lg text-xs font-mono flex items-center justify-center bg-slate-800/90 text-slate-400 hover:bg-slate-700 hover:text-white";
+        }
+      });
+
+      // Update Slide Text with animation
+      const badge = document.getElementById("slideDimensionBadge");
+      badge.textContent = slide.dimension;
+      badge.className = `text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full ${slide.badgeClass}`;
+
+      document.getElementById("slideMoveTag").textContent = slide.moveTag;
+      document.getElementById("slideTitle").textContent = slide.title;
+      document.getElementById("slideSubtitle").textContent = slide.subtitle;
+      document.getElementById("slideFooterText").textContent = slide.footer;
+
+      const bodyEl = document.getElementById("slideBody");
+      bodyEl.classList.remove("slide-fade");
+      void bodyEl.offsetWidth; // trigger reflow
+      bodyEl.innerHTML = slide.bodyHTML;
+      bodyEl.classList.add("slide-fade");
+
+      // Update 3D HUD
+      document.getElementById("hudMoveCode").textContent = slide.hudCode;
+      document.getElementById("hudMoveName").textContent = slide.hudName;
+      document.getElementById("hudMoveDesc").textContent = slide.hudDesc;
+
+      // Update Prev/Next buttons
+      document.getElementById("btnPrev").disabled = index === 0;
+      const btnNext = document.getElementById("btnNext");
+      if (index === SLIDES.length - 1) {
+        btnNext.textContent = "↺ Reiniciar Presentación";
+      } else {
+        btnNext.textContent = "Siguiente Jugada →";
+      }
+
+      // Close inspector if open
+      closeInspector();
+
+      // Transition 3D Board
+      transitionBoardToState(slide.boardState, slide.camera);
+    }
+
+    function nextSlide() {
+      if (currentSlideIndex < SLIDES.length - 1) {
+        goToSlide(currentSlideIndex + 1);
+      } else {
+        goToSlide(0);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlideIndex > 0) {
+        goToSlide(currentSlideIndex - 1);
+      }
+    }
+
+    function toggleAutoPlay() {
+      const icon = document.getElementById("autoPlayIcon");
+      const text = document.getElementById("autoPlayText");
+      if (autoPlayTimer) {
+        clearInterval(autoPlayTimer);
+        autoPlayTimer = null;
+        icon.textContent = "▶";
+        text.textContent = "Auto-Avance";
+      } else {
+        icon.textContent = "⏸";
+        text.textContent = "Pausar";
+        autoPlayTimer = setInterval(() => {
+          nextSlide();
+        }, 7500);
+      }
+    }
+
+    function toggleBoardExpand() {
+      isBoardExpanded = !isBoardExpanded;
+      const slidePanel = document.getElementById("slidePanel");
+      const boardPanel = document.getElementById("boardPanel");
+      const btn = document.getElementById("btnExpand3D");
+      if (isBoardExpanded) {
+        slidePanel.classList.add("hidden");
+        boardPanel.className = "lg:col-span-12 xl:col-span-12 flex flex-col glass-card rounded-2xl overflow-hidden relative min-h-[560px] h-[calc(100vh-110px)]";
+        btn.textContent = "◫ Vista Dividida";
+      } else {
+        slidePanel.classList.remove("hidden");
+        boardPanel.className = "lg:col-span-6 xl:col-span-6 flex flex-col glass-card rounded-2xl overflow-hidden relative min-h-[480px] max-h-[calc(100vh-145px)]";
+        btn.textContent = "⛶ Expandir 3D";
+      }
+      setTimeout(resizeCanvas, 50);
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === " ") {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+
+    // =========================================================================
+    // 3. CUSTOM 3D SCULPTED CHESS ENGINE (HTML5 CANVAS 3D WITH LIGHTING & ARCS)
+    // =========================================================================
+    const canvas = document.getElementById("chess3d");
+    const ctx = canvas.getContext("2d");
+
+    // Camera state
+    let cam = {
+      rotY: 0.55,
+      rotX: 0.68,
+      zoom: 1.0,
+      targetRotY: 0.55,
+      targetRotX: 0.68,
+      targetZoom: 1.0
+    };
+
+    // Animated Piece Registry: id -> { id, type, side, x, z, y, startX, startZ, targetX, targetZ, animT, opacity, name, role, tag, sq }
+    let activePieces = new Map();
+    let currentHighlights = [];
+    let currentArrows = [];
+    let selectedPieceId = null;
+    let hoveredPieceId = null;
+    let projectedScreenPieces = []; // for click/hover picking
+
+    function sqToCoords(sq) {
+      const files = "abcdefgh";
+      const file = files.indexOf(sq[0]);
+      const rank = parseInt(sq[1], 10) - 1;
+      // Map a..h -> -3.5 .. +3.5, 1..8 -> +3.5 .. -3.5 (so rank 1 is front/south +3.5, rank 8 is back/north -3.5)
+      return {
+        x: file - 3.5,
+        z: 3.5 - rank
+      };
+    }
+
+    function transitionBoardToState(boardState, cameraTarget) {
+      if (cameraTarget) {
+        cam.targetRotY = cameraTarget.rotY;
+        cam.targetRotX = cameraTarget.rotX;
+        cam.targetZoom = cameraTarget.zoom;
+      }
+      currentHighlights = boardState.highlights || [];
+      currentArrows = boardState.arrows || [];
+
+      const incomingIds = new Set();
+      boardState.pieces.forEach((p) => {
+        incomingIds.add(p.id);
+        const coords = sqToCoords(p.sq);
+        if (activePieces.has(p.id)) {
+          const existing = activePieces.get(p.id);
+          existing.startX = existing.x;
+          existing.startZ = existing.z;
+          existing.targetX = coords.x;
+          existing.targetZ = coords.z;
+          existing.animT = (Math.abs(existing.x - coords.x) > 0.01 || Math.abs(existing.z - coords.z) > 0.01) ? 0 : 1;
+          existing.type = p.type;
+          existing.side = p.side;
+          existing.name = p.name;
+          existing.role = p.role;
+          existing.tag = p.tag || null;
+          existing.sq = p.sq;
+          existing.targetOpacity = 1;
+        } else {
+          activePieces.set(p.id, {
+            id: p.id,
+            type: p.type,
+            side: p.side,
+            x: coords.x,
+            z: coords.z,
+            y: 0,
+            startX: coords.x,
+            startZ: coords.z,
+            targetX: coords.x,
+            targetZ: coords.z,
+            animT: 1,
+            opacity: 0,
+            targetOpacity: 1,
+            name: p.name,
+            role: p.role,
+            tag: p.tag || null,
+            sq: p.sq
+          });
+        }
+      });
+
+      // Fade out removed pieces
+      activePieces.forEach((val, key) => {
+        if (!incomingIds.has(key)) {
+          val.targetOpacity = 0;
+        }
+      });
+    }
+
+    function setCameraPreset(preset) {
+      if (preset === "iso") {
+        cam.targetRotY = 0.58;
+        cam.targetRotX = 0.66;
+        cam.targetZoom = 1.04;
+      } else if (preset === "top") {
+        cam.targetRotY = 0.0;
+        cam.targetRotX = 1.38;
+        cam.targetZoom = 1.08;
+      } else if (preset === "vzla") {
+        cam.targetRotY = 0.0;
+        cam.targetRotX = 0.52;
+        cam.targetZoom = 1.08;
+      } else if (preset === "us") {
+        cam.targetRotY = Math.PI;
+        cam.targetRotX = 0.52;
+        cam.targetZoom = 1.08;
+      }
+    }
+
+    // Mouse / Touch Orbit & Picking
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let pointerDownPos = { x: 0, y: 0 };
+
+    canvas.addEventListener("pointerdown", (e) => {
+      isDragging = true;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      pointerDownPos = { x: e.clientX, y: e.clientY };
+      canvas.setPointerCapture(e.pointerId);
+    });
+
+    canvas.addEventListener("pointermove", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      if (isDragging) {
+        const dx = e.clientX - dragStartX;
+        const dy = e.clientY - dragStartY;
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        cam.targetRotY += dx * 0.0085;
+        cam.targetRotX = Math.max(0.32, Math.min(1.45, cam.targetRotX + dy * 0.007));
+      } else {
+        // Check hover over pieces
+        let found = null;
+        for (let i = projectedScreenPieces.length - 1; i >= 0; i--) {
+          const item = projectedScreenPieces[i];
+          const dist = Math.hypot(mx - item.sx, my - item.sy);
+          if (dist < item.radius) {
+            found = item.piece.id;
+            break;
+          }
+        }
+        hoveredPieceId = found;
+        canvas.style.cursor = found ? "pointer" : "grab";
+      }
+    });
+
+    canvas.addEventListener("pointerup", (e) => {
+      isDragging = false;
+      const moveDist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
+      if (moveDist < 6) {
+        // Click detection
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        let clickedPiece = null;
+        for (let i = projectedScreenPieces.length - 1; i >= 0; i--) {
+          const item = projectedScreenPieces[i];
+          const dist = Math.hypot(mx - item.sx, my - item.sy);
+          if (dist < item.radius) {
+            clickedPiece = item.piece;
+            break;
+          }
+        }
+        if (clickedPiece) {
+          selectedPieceId = clickedPiece.id;
+          showInspector(clickedPiece);
+        } else {
+          closeInspector();
+        }
+      }
+    });
+
+    canvas.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      cam.targetZoom = Math.max(0.7, Math.min(1.55, cam.targetZoom - e.deltaY * 0.0008));
+    }, { passive: false });
+
+    function showInspector(piece) {
+      const el = document.getElementById("pieceInspector");
+      el.classList.remove("hidden");
+      const symbols = { K: "♔", Q: "♕", R: "♖", B: "♗", N: "♘", P: "♙" };
+      document.getElementById("inspSymbol").textContent = symbols[piece.type] || "♟";
+      const sideEl = document.getElementById("inspSide");
+      if (piece.side === "gold") {
+        sideEl.textContent = "Bloque Acreedor / EE.UU.";
+        sideEl.className = "text-xs font-bold uppercase tracking-wider text-amber-400";
+      } else {
+        sideEl.textContent = "Defensa Soberana / CITGO";
+        sideEl.className = "text-xs font-bold uppercase tracking-wider text-cyan-400";
+      }
+      document.getElementById("inspTitle").textContent = piece.name;
+      document.getElementById("inspDesc").textContent = piece.role;
+      document.getElementById("inspSquare").textContent = `Casilla: ${piece.sq.toUpperCase()}`;
+      document.getElementById("inspRoleTag").textContent = piece.tag || `Pieza ${piece.type}`;
+    }
+
+    function closeInspector() {
+      selectedPieceId = null;
+      document.getElementById("pieceInspector").classList.add("hidden");
+    }
+
+    // 3D Projection Math
+    function project3D(x, y, z, w, h, scale) {
+      // Rotate around Y axis
+      const cosY = Math.cos(cam.rotY);
+      const sinY = Math.sin(cam.rotY);
+      const rx = x * cosY - z * sinY;
+      const rz = x * sinY + z * cosY;
+
+      // Rotate around X axis (pitch)
+      const cosX = Math.cos(cam.rotX);
+      const sinX = Math.sin(cam.rotX);
+      const ry = y * cosX - rz * sinX;
+      const depth = y * sinX + rz * cosX;
+
+      const fov = 13.5;
+      const perspective = fov / (fov + depth + 1.2);
+      return {
+        sx: w * 0.5 + rx * scale * perspective,
+        sy: h * 0.54 - ry * scale * perspective,
+        depth: depth,
+        pScale: scale * perspective
+      };
+    }
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener("resize", resizeCanvas);
+
+    // Draw a 3D sculpted chess piece at (x, y, z) using layered 3D lathe discs & silhouettes
+    function drawSculptedPiece(p, w, h, baseScale, time) {
+      const baseProj = project3D(p.x, p.y, p.z, w, h, baseScale);
+      const rUnit = baseProj.pScale;
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, p.opacity));
+
+      const isGold = p.side === "gold";
+      const isSelected = p.id === selectedPieceId;
+      const isHovered = p.id === hoveredPieceId;
+
+      // Ground Shadow
+      const shadowProj = project3D(p.x + 0.08, 0, p.z + 0.08, w, h, baseScale);
+      ctx.beginPath();
+      ctx.ellipse(shadowProj.sx, shadowProj.sy, rUnit * 0.34, rUnit * 0.21, 0, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+      ctx.fill();
+
+      // Selection / Hover Ring on board
+      if (isSelected || isHovered || p.tag) {
+        const ringProj = project3D(p.x, 0.02, p.z, w, h, baseScale);
+        ctx.beginPath();
+        ctx.ellipse(ringProj.sx, ringProj.sy, rUnit * 0.42, rUnit * 0.26, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = isSelected
+          ? "#ffffff"
+          : isGold
+          ? "rgba(251, 191, 36, 0.85)"
+          : "rgba(34, 211, 238, 0.85)";
+        ctx.lineWidth = isSelected ? 2.5 : 1.6;
+        ctx.stroke();
+      }
+
+      // Piece Height & Lathe Profile (bottom to top: [heightOffset, radiusRatio])
+      let profile = [];
+      let totalHeight = 0.85;
+      if (p.type === "P") {
+        totalHeight = 0.68;
+        profile = [
+          [0.0, 0.30], [0.08, 0.28], [0.16, 0.18], [0.38, 0.13], [0.46, 0.20], [0.56, 0.19]
+        ];
+      } else if (p.type === "R") {
+        totalHeight = 0.88;
+        profile = [
+          [0.0, 0.34], [0.10, 0.31], [0.20, 0.22], [0.62, 0.20], [0.72, 0.27], [0.88, 0.27]
+        ];
+      } else if (p.type === "N") {
+        totalHeight = 0.92;
+        profile = [
+          [0.0, 0.34], [0.10, 0.30], [0.22, 0.20], [0.55, 0.22], [0.78, 0.18], [0.90, 0.12]
+        ];
+      } else if (p.type === "B") {
+        totalHeight = 0.98;
+        profile = [
+          [0.0, 0.34], [0.10, 0.30], [0.22, 0.18], [0.55, 0.15], [0.76, 0.22], [0.92, 0.12]
+        ];
+      } else if (p.type === "Q") {
+        totalHeight = 1.15;
+        profile = [
+          [0.0, 0.37], [0.12, 0.33], [0.26, 0.20], [0.72, 0.16], [0.94, 0.26], [1.10, 0.29]
+        ];
+      } else if (p.type === "K") {
+        totalHeight = 1.25;
+        profile = [
+          [0.0, 0.38], [0.12, 0.34], [0.28, 0.21], [0.78, 0.18], [1.00, 0.27], [1.14, 0.24]
+        ];
+      }
+
+      // Colors
+      const cDark = isGold ? "#78350f" : "#083344";
+      const cMid  = isGold ? "#d97706" : "#0891b2";
+      const cLite = isGold ? "#fde68a" : "#67e8f9";
+      const cRim  = isGold ? "#fbbf24" : "#22d3ee";
+
+      // Draw stacked 3D segments from base to top
+      const pts = profile.map(([hOff, rad]) => {
+        const pr = project3D(p.x, p.y + hOff, p.z, w, h, baseScale);
+        return { sx: pr.sx, sy: pr.sy, r: rad * pr.pScale, hOff };
+      });
+
+      // Pedestal Base Disc
+      ctx.beginPath();
+      ctx.ellipse(pts[0].sx, pts[0].sy, pts[0].r, pts[0].r * 0.58, 0, 0, Math.PI * 2);
+      ctx.fillStyle = cDark;
+      ctx.fill();
+      ctx.strokeStyle = cRim;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      // Extrude body segments
+      for (let i = 0; i < pts.length - 1; i++) {
+        const b = pts[i];
+        const t = pts[i + 1];
+        const grad = ctx.createLinearGradient(b.sx - Math.max(b.r, t.r), b.sy, b.sx + Math.max(b.r, t.r), t.sy);
+        grad.addColorStop(0, cDark);
+        grad.addColorStop(0.35, cLite);
+        grad.addColorStop(0.7, cMid);
+        grad.addColorStop(1, cDark);
+
+        ctx.beginPath();
+        ctx.moveTo(b.sx - b.r, b.sy);
+        ctx.lineTo(t.sx - t.r, t.sy);
+        ctx.ellipse(t.sx, t.sy, t.r, t.r * 0.52, 0, Math.PI, 0, true);
+        ctx.lineTo(b.sx + b.r, b.sy);
+        ctx.ellipse(b.sx, b.sy, b.r, b.r * 0.52, 0, 0, Math.PI, false);
+        ctx.closePath();
+        ctx.fillStyle = grad;
+        ctx.fill();
+      }
+
+      // Top Cap / Finial per piece type
+      const topPt = pts[pts.length - 1];
+      ctx.beginPath();
+      ctx.ellipse(topPt.sx, topPt.sy, topPt.r, topPt.r * 0.52, 0, 0, Math.PI * 2);
+      ctx.fillStyle = cLite;
+      ctx.fill();
+      ctx.strokeStyle = cRim;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      if (p.type === "P") {
+        // Sphere head
+        const headPr = project3D(p.x, p.y + 0.63, p.z, w, h, baseScale);
+        const hr = headPr.pScale * 0.17;
+        const rg = ctx.createRadialGradient(headPr.sx - hr * 0.3, headPr.sy - hr * 0.3, hr * 0.1, headPr.sx, headPr.sy, hr);
+        rg.addColorStop(0, "#ffffff");
+        rg.addColorStop(0.35, cLite);
+        rg.addColorStop(1, cDark);
+        ctx.beginPath();
+        ctx.arc(headPr.sx, headPr.sy, hr, 0, Math.PI * 2);
+        ctx.fillStyle = rg;
+        ctx.fill();
+      } else if (p.type === "K") {
+        // Royal Cross on top
+        const crossPr = project3D(p.x, p.y + 1.32, p.z, w, h, baseScale);
+        const cs = crossPr.pScale * 0.12;
+        ctx.strokeStyle = cLite;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(crossPr.sx, crossPr.sy + cs);
+        ctx.lineTo(crossPr.sx, crossPr.sy - cs * 1.4);
+        ctx.moveTo(crossPr.sx - cs * 0.9, crossPr.sy - cs * 0.5);
+        ctx.lineTo(crossPr.sx + cs * 0.9, crossPr.sy - cs * 0.5);
+        ctx.stroke();
+      } else if (p.type === "Q") {
+        // Crown pearls
+        for (let a = 0; a < 5; a++) {
+          const ang = (a / 4) * Math.PI - Math.PI;
+          const px = topPt.sx + Math.cos(ang) * topPt.r * 0.85;
+          const py = topPt.sy + Math.sin(ang) * topPt.r * 0.35 - topPt.r * 0.25;
+          ctx.beginPath();
+          ctx.arc(px, py, topPt.r * 0.16, 0, Math.PI * 2);
+          ctx.fillStyle = "#ffffff";
+          ctx.fill();
+        }
+      } else if (p.type === "N") {
+        // Sculpted Knight Crest
+        const headPr = project3D(p.x, p.y + 0.82, p.z, w, h, baseScale);
+        const s = headPr.pScale * 0.24;
+        ctx.beginPath();
+        ctx.moveTo(headPr.sx - s * 0.5, headPr.sy + s * 0.4);
+        ctx.lineTo(headPr.sx - s * 0.3, headPr.sy - s * 0.9);
+        ctx.lineTo(headPr.sx + s * 0.85, headPr.sy - s * 0.35);
+        ctx.lineTo(headPr.sx + s * 0.3, headPr.sy + s * 0.2);
+        ctx.closePath();
+        ctx.fillStyle = cLite;
+        ctx.fill();
+        ctx.strokeStyle = cDark;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+
+      // Floating Tag Label above key pieces
+      const labelPr = project3D(p.x, p.y + totalHeight + 0.28, p.z, w, h, baseScale);
+      if (p.tag || isSelected || isHovered) {
+        const text = p.tag || p.name.split(":")[0];
+        ctx.font = "bold 11px Inter, sans-serif";
+        const tw = ctx.measureText(text).width + 12;
+        const th = 20;
+        ctx.fillStyle = isGold ? "rgba(24, 16, 5, 0.92)" : "rgba(4, 24, 34, 0.92)";
+        ctx.strokeStyle = isGold ? "#f59e0b" : "#06b6d4";
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.roundRect(labelPr.sx - tw / 2, labelPr.sy - th / 2, tw, th, 6);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = isGold ? "#fde68a" : "#a5f3fc";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(text, labelPr.sx, labelPr.sy + 0.5);
+      }
+
+      ctx.restore();
+
+      // Return screen hit region for mouse picking
+      const midPr = project3D(p.x, p.y + totalHeight * 0.45, p.z, w, h, baseScale);
+      return {
+        piece: p,
+        sx: midPr.sx,
+        sy: midPr.sy,
+        radius: Math.max(18, rUnit * 0.42)
+      };
+    }
+
+    function draw3DBoardAndScene(timestamp) {
+      const time = timestamp * 0.001;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+
+      // Smooth camera interpolation
+      cam.rotY += (cam.targetRotY - cam.rotY) * 0.09;
+      cam.rotX += (cam.targetRotX - cam.rotX) * 0.09;
+      cam.zoom += (cam.targetZoom - cam.zoom) * 0.1;
+
+      const baseScale = Math.min(w, h) * 0.088 * cam.zoom;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Subtle radial glow under board
+      const centerPr = project3D(0, -0.2, 0, w, h, baseScale);
+      const bgGrad = ctx.createRadialGradient(centerPr.sx, centerPr.sy, 10, centerPr.sx, centerPr.sy, baseScale * 6.5);
+      bgGrad.addColorStop(0, "rgba(14, 116, 144, 0.16)");
+      bgGrad.addColorStop(0.5, "rgba(245, 158, 11, 0.06)");
+      bgGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // 1. Draw Outer 3D Board Frame (Bezel with thickness)
+      const bMin = -4.35;
+      const bMax = 4.35;
+      const bThick = -0.32;
+      const frameCornersTop = [
+        project3D(bMin, 0, bMin, w, h, baseScale),
+        project3D(bMax, 0, bMin, w, h, baseScale),
+        project3D(bMax, 0, bMax, w, h, baseScale),
+        project3D(bMin, 0, bMax, w, h, baseScale)
+      ];
+      const frameCornersBot = [
+        project3D(bMin, bThick, bMin, w, h, baseScale),
+        project3D(bMax, bThick, bMin, w, h, baseScale),
+        project3D(bMax, bThick, bMax, w, h, baseScale),
+        project3D(bMin, bThick, bMax, w, h, baseScale)
+      ];
+
+      // Draw board side walls
+      for (let i = 0; i < 4; i++) {
+        const next = (i + 1) % 4;
+        ctx.beginPath();
+        ctx.moveTo(frameCornersTop[i].sx, frameCornersTop[i].sy);
+        ctx.lineTo(frameCornersTop[next].sx, frameCornersTop[next].sy);
+        ctx.lineTo(frameCornersBot[next].sx, frameCornersBot[next].sy);
+        ctx.lineTo(frameCornersBot[i].sx, frameCornersBot[i].sy);
+        ctx.closePath();
+        ctx.fillStyle = i % 2 === 0 ? "#0f172a" : "#1e293b";
+        ctx.fill();
+        ctx.strokeStyle = "rgba(245, 158, 11, 0.3)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Draw Board Top Frame Surface
+      ctx.beginPath();
+      ctx.moveTo(frameCornersTop[0].sx, frameCornersTop[0].sy);
+      for (let i = 1; i < 4; i++) ctx.lineTo(frameCornersTop[i].sx, frameCornersTop[i].sy);
+      ctx.closePath();
+      ctx.fillStyle = "#090d16";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(245, 158, 11, 0.45)";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // 2. Draw 64 Squares
+      const files = "abcdefgh";
+      for (let r = 0; r < 8; r++) {
+        for (let f = 0; f < 8; f++) {
+          const x0 = f - 4;
+          const x1 = f - 3;
+          const z0 = r - 4;
+          const z1 = r - 3;
+
+          const c0 = project3D(x0, 0, z0, w, h, baseScale);
+          const c1 = project3D(x1, 0, z0, w, h, baseScale);
+          const c2 = project3D(x1, 0, z1, w, h, baseScale);
+          const c3 = project3D(x0, 0, z1, w, h, baseScale);
+
+          const isLight = (r + f) % 2 === 0;
+          ctx.beginPath();
+          ctx.moveTo(c0.sx, c0.sy);
+          ctx.lineTo(c1.sx, c1.sy);
+          ctx.lineTo(c2.sx, c2.sy);
+          ctx.lineTo(c3.sx, c3.sy);
+          ctx.closePath();
+
+          ctx.fillStyle = isLight ? "#1e293b" : "#0b1120";
+          ctx.fill();
+          ctx.strokeStyle = "rgba(148, 163, 184, 0.12)";
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+
+          // Check if square is highlighted
+          const sqName = `${files[f]}${8 - r}`;
+          const hl = currentHighlights.find((hItem) => hItem.sq === sqName);
+          if (hl) {
+            ctx.fillStyle = hl.color;
+            ctx.fill();
+            ctx.strokeStyle = "#fbbf24";
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Coordinate Labels along border
+      ctx.font = "bold 10px monospace";
+      ctx.fillStyle = "rgba(148, 163, 184, 0.65)";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      for (let i = 0; i < 8; i++) {
+        const fp = project3D(i - 3.5, 0, 4.18, w, h, baseScale);
+        ctx.fillText(files[i].toUpperCase(), fp.sx, fp.sy);
+        const rp = project3D(-4.18, 0, 3.5 - i, w, h, baseScale);
+        ctx.fillText(String(i + 1), rp.sx, rp.sy);
+      }
+
+      // 3. Draw Tactical Vectors / Arrows on Board (Orthogonal Rays & Knight L-Jumps)
+      currentArrows.forEach((arr) => {
+        const fromC = sqToCoords(arr.from);
+        const toC = sqToCoords(arr.to);
+
+        ctx.save();
+        if (arr.isKnight) {
+          // Draw L-shaped Knight jump arc in 3D!
+          const midC = { x: fromC.x, z: toC.z };
+          const pStart = project3D(fromC.x, 0.08, fromC.z, w, h, baseScale);
+          const pCorner = project3D(midC.x, 0.08, midC.z, w, h, baseScale);
+          const pEnd = project3D(toC.x, 0.08, toC.z, w, h, baseScale);
+
+          // Dashed L footprint on board
+          ctx.beginPath();
+          ctx.setLineDash([5, 4]);
+          ctx.moveTo(pStart.sx, pStart.sy);
+          ctx.lineTo(pCorner.sx, pCorner.sy);
+          ctx.lineTo(pEnd.sx, pEnd.sy);
+          ctx.strokeStyle = arr.color;
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // High 3D Parabolic Jump Arc
+          ctx.beginPath();
+          for (let s = 0; s <= 24; s++) {
+            const t = s / 24;
+            const ix = fromC.x + (toC.x - fromC.x) * t;
+            const iz = fromC.z + (toC.z - fromC.z) * t;
+            const iy = Math.sin(t * Math.PI) * 1.35;
+            const pt = project3D(ix, iy, iz, w, h, baseScale);
+            if (s === 0) ctx.moveTo(pt.sx, pt.sy);
+            else ctx.lineTo(pt.sx, pt.sy);
+          }
+          ctx.strokeStyle = arr.color;
+          ctx.lineWidth = 3;
+          ctx.stroke();
+        } else {
+          // Direct Tactical Vector Arrow on Board
+          const pStart = project3D(fromC.x, 0.06, fromC.z, w, h, baseScale);
+          const pEnd = project3D(toC.x, 0.06, toC.z, w, h, baseScale);
+
+          ctx.beginPath();
+          ctx.moveTo(pStart.sx, pStart.sy);
+          ctx.lineTo(pEnd.sx, pEnd.sy);
+          ctx.strokeStyle = arr.color;
+          ctx.lineWidth = 3.2;
+          ctx.stroke();
+
+          // Arrowhead
+          const angle = Math.atan2(pEnd.sy - pStart.sy, pEnd.sx - pStart.sx);
+          const headLen = 10;
+          ctx.beginPath();
+          ctx.moveTo(pEnd.sx, pEnd.sy);
+          ctx.lineTo(pEnd.sx - headLen * Math.cos(angle - Math.PI / 6), pEnd.sy - headLen * Math.sin(angle - Math.PI / 6));
+          ctx.lineTo(pEnd.sx - headLen * Math.cos(angle + Math.PI / 6), pEnd.sy - headLen * Math.sin(angle + Math.PI / 6));
+          ctx.closePath();
+          ctx.fillStyle = arr.color;
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+
+      // 4. Update & Depth-Sort 3D Pieces
+      const piecesList = [];
+      activePieces.forEach((p, key) => {
+        if (p.animT < 1) {
+          p.animT = Math.min(1, p.animT + 0.045);
+          const ease = 1 - Math.pow(1 - p.animT, 3);
+          p.x = p.startX + (p.targetX - p.startX) * ease;
+          p.z = p.startZ + (p.targetZ - p.startZ) * ease;
+          p.y = Math.sin(ease * Math.PI) * 0.75; // parabolic hop during move
+        } else {
+          p.y = 0;
+        }
+        p.opacity += (p.targetOpacity - p.opacity) * 0.12;
+        if (p.opacity < 0.02 && p.targetOpacity === 0) {
+          activePieces.delete(key);
+        } else {
+          const pr = project3D(p.x, p.y, p.z, w, h, baseScale);
+          piecesList.push({ piece: p, depth: pr.depth });
+        }
+      });
+
+      // Sort back-to-front (farther depth first)
+      piecesList.sort((a, b) => b.depth - a.depth);
+
+      projectedScreenPieces = [];
+      piecesList.forEach((item) => {
+        const hit = drawSculptedPiece(item.piece, w, h, baseScale, time);
+        projectedScreenPieces.push(hit);
+      });
+
+      requestAnimationFrame(draw3DBoardAndScene);
+    }
+
+    // Initialize everything on load
+    window.addEventListener("DOMContentLoaded", () => {
+      resizeCanvas();
+      initNavigation();
+      goToSlide(0);
+      requestAnimationFrame(draw3DBoardAndScene);
+    });
+  </script>
+</body>
+</html>
